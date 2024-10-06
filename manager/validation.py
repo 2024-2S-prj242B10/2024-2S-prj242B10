@@ -99,7 +99,7 @@ class file_utill:
         self.book_count
         self.recent_date ='2000-01-01'
         self.user_count
-        self.loan_count
+        self.loan_count #loglist 행의 개수
 
     #startdate.txt 무결성
     def validate_startdate_file(self):
@@ -125,7 +125,7 @@ class file_utill:
             try:
                 with open('data/startdate.txt','w',encoding='utf-8') as file_w:
                     file_w.write('2000-01-01')
-                    print('data 디렉토리에 startdate.txt파일 생성을 완료했습니다.')
+                print('data 디렉토리에 startdate.txt파일 생성을 완료했습니다.')
             except:
                 print('data 디렉토리에 startdate.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 os.system('pause')
@@ -182,7 +182,8 @@ class file_utill:
         else:
             try:
                 with open('data/booklist.txt','w',encoding='utf-8'):
-                    print('data 디렉토리에 booklist.txt파일 생성을 완료했습니다.')
+                    pass
+                print('data 디렉토리에 booklist.txt파일 생성을 완료했습니다.')
             except:
                 print('data 디렉토리에 booklist.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 os.system('pause')
@@ -253,10 +254,76 @@ class file_utill:
             try:
                 with open('data/userlist.txt','w',encoding='utf-8') as file_w:
                     file_w.write('ADMIN,admin,a1234,0,2000-01-01,False')
-                    print('data 디렉토리에 userlist.txt파일 생성을 완료했습니다.')
+                print('data 디렉토리에 userlist.txt파일 생성을 완료했습니다.')
             except:
                 print('data 디렉토리에 userlist.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 os.system('pause')
                 sys.exit()
     
+     #userlist.txt 무결성
+    
+    #loglist.txt 무결성
+    def validate_loglist_file(self):
+        if os.path.exists('data/loglist.txt'):
+            with open('data/loglist.txt','r',encoding='utf-8') as file:
+                lines = file.read().rstrip().split('\n')
+                if len(lines) > self.book_count:
+                    print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                    os.system('pause')
+                    sys.exit()
+                elif len(lines)==1:
+                    if lines == '': #빈 파일일 경우
+                        self.loan_count = 0
+                    else:
+                        parts = lines.split(',')
+                        if not len(parts)==4:
+                            print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            os.system('pause')
+                            sys.exit()
+                        else:
+                            book_id,user_id,is_loan,loan_date= parts[0],parts[1],parts[2],parts[3]
+                            book_id_check = validate_book_id(book_id)
+                            user_id_check = validate_user_id(user_id)
+                            is_loan_check = validate_t_f(is_loan)
+                            loan_date_check = validate_date(loan_date) # 정규 표현식 검사
+                            if loan_date_check: # 최근 날짜와 비교
+                                loan_date_check = validate_date_compare(loan_date,self.recent_date)
+                           
+                            if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
+                                print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                os.system('pause')
+                                sys.exit()
+                            self.loan_count = 1
+                else:
+                    line_count =0
+                    for line in lines:
+                        parts = line.split(',')
+                        if not len(parts)==4:
+                            print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            os.system('pause')
+                            sys.exit()
+                        else:
+                            book_id,user_id,is_loan,loan_date= parts[0],parts[1],parts[2],parts[3]
+                            book_id_check = validate_book_id(book_id)
+                            user_id_check = validate_user_id(user_id)
+                            is_loan_check = validate_t_f(is_loan)
+                            loan_date_check = validate_date(loan_date) # 정규 표현식 검사
+                            if loan_date_check: # 최근 날짜와 비교
+                                loan_date_check = validate_date_compare(loan_date,self.recent_date)
+                            if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
+                                print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                os.system('pause')
+                                sys.exit()
+                            
+                        line_count +=1
+                    self.loan_count= line_count #loglist.txt 행 개수
+        else:
+            try:
+                with open('data/loglist.txt','w',encoding='utf-8'):
+                    pass
+                    print('data 디렉토리에 loglist.txt파일 생성을 완료했습니다.')
+            except:
+                print('data 디렉토리에 loglist.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
+                os.system('pause')
+                sys.exit()
     
