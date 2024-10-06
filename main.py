@@ -2,6 +2,9 @@ from src.book import BookManager
 from manager.validation import validate_book_title, validate_book_id, validate_book_exist, validate_book_can_borrow
 from manager.ui import admin_menu
 
+class Config:
+    Start_date = ''
+
 def main():
     book_manager = BookManager()
     while True:
