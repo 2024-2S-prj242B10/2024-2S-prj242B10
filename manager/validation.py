@@ -94,7 +94,7 @@ def validate_book_can_borrow(book_id):
             return not book.is_loaned
     return False
 
-class File_utill:
+class File_util:
     def __init__(self):
         self.book_count
         self.recent_date ='2000-01-01'
@@ -326,4 +326,3 @@ class File_utill:
                 print('data 디렉토리에 loglist.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 os.system('pause')
                 sys.exit()
-    
