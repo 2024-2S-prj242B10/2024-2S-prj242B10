@@ -4,7 +4,7 @@ from src.book import BookManager
 from manager.validation import validate_book_title, validate_book_id, validate_book_exist, validate_book_can_borrow,File_util
 from manager.ui import admin_menu
 from src.user import UserManager
-from src.date_manager import Date_manager
+from src.date_manager import DateManager
 from manager.ui import Prompt
 
 def main():
@@ -15,7 +15,7 @@ def main():
     file_util.validate_userlist_file()
     file_util.validate_loglist_file()
 
-    date_manager = Date_manager()
+    date_manager = DateManager()
     date_manager.read_file()
 
     #가상날짜 입력 프롬프트
