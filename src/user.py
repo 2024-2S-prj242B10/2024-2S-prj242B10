@@ -1,22 +1,48 @@
-from manager.validation import Validate  
+import csv
+import os
+from manager.validation import Validate 
 
 class User:
-    def __init__(self, name, user_id, password, loan_count=0, loan_date=None, is_admin=False):
-        self.name = name
+    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=False):
+        self.user_name = user_name
         self.user_id = user_id
-        self.password = password
+        self.user_password = user_password
         self.loan_count = loan_count
         self.loan_date = loan_date
         self.is_admin = is_admin
 
     def __str__(self):
-        return f"{self.name}, {self.user_id}, {self.password}, {self.loan_count}, {self.loan_date}, {self.is_admin}"
+        return f"{self.user_name}, {self.user_id}, {self.user_password}, {self.loan_count}, {self.loan_date}, {self.is_admin}"
 
 class UserManager:
-    def __init__(self, file_path):
+    def __init__(self, user_file_path="data/userlist.txt"):
         self.validate = Validate()
-        self.file_path = file_path
+        self.user_file_path = user_file_path
         self.users = self.load_users()
+    
+    def add_user(self,register_name,register_id,register_pw):
+        new_user = User(register_name,register_id,register_pw,0,None,False)
+        self.users.append(new_user)
+        with open(self.user_file_path, 'w', encoding='utf-8', newline='') as file:
+            writer = csv.writer(file)
+            for user in self.users:
+                writer.writerow([user.user_name,user.user_id,user.user_password,user.loan_count,user.loan_date, str(user.is_admin)])
+
+    def load_users(self):
+        users = []
+        if os.path.exists(self.user_file_path):
+            with open(self.user_file_path, 'r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    user_name, user_id, user_password,loan_count,loan_date,is_admin = row
+                    users.append(User(user_name, user_id,user_password,loan_count,loan_date,is_admin))
+        else:
+            print(f"{self.user_file_path} 파일이 존재하지 않아 새로 생성합니다.")
+            os.makedirs(os.path.dirname(self.user_file_path), exist_ok=True)
+            with open(self.user_file_path, 'w', encoding='utf-8') as file:
+                file.write("ADMIN,admin,a1234,0,2000-01-01,False")
+        return users
+
 
     def user_login(self,user_manager,logined_id,logined_pw)->tuple[bool,bool]:
         logined_id = logined_id.strip()
