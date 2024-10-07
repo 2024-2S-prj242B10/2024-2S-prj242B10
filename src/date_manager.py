@@ -58,7 +58,3 @@ class Date_manager():
             print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")
             return False
         
-    
-
-
-      
