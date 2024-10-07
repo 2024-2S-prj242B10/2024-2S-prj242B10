@@ -1,5 +1,5 @@
 from manager.validation import *
-
+from src.user import *
 def admin_menu():
     """관리자 메뉴"""
     print("[관리자 메뉴]")
@@ -98,7 +98,7 @@ class Prompt:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
 
     #회원 가입
-    def register(self):
+    def register(self,user_manager):
           while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
             print("사용할 계정의 정보를 입력해주세요.")
@@ -109,16 +109,16 @@ class Prompt:
             
             ##회원 가입 입력 유효성 검사 만든 거 합쳐야 함
             ##insert는 is_valid가 False일 때 오류 문구 넘겨줘
-            is_valid, insert = self.parser.register_parse(register_id,register_pw,register_name,command)
+            is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)
             
             if is_valid:
                 if command=='y': 
-                    #정상 입력한 경우
-                    ## userlist.txt에 회원 등록
+                    user_manager.add_user(register_name,register_id,register_pw)
                     print(f"{register_name}님 회원가입에 성공하였습니다.초기화면으로 돌아갑니다.")
                     break
                 else:
                     #사용자가 command로 y 이외의 값을 입력한 경우
+                    print("초기화면으로 돌아갑니다.")
                     break
             else:
                 print(insert)  # 오류 메시지 출력
