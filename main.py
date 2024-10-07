@@ -1,9 +1,44 @@
+import os
+import sys
 from src.book import BookManager
-from manager.validation import validate_book_title, validate_book_id, validate_book_exist, validate_book_can_borrow
+from manager.validation import validate_book_title, validate_book_id, validate_book_exist, validate_book_can_borrow,File_util
 from manager.ui import admin_menu
+from src.user import UserManager
+from src.date_manager import Date_manager
+
 
 def main():
+    #무결성 검사
+    file_util = File_util()
+    file_util.validate_startdate_file
+    file_util.validate_booklist_file
+    file_util.validate_userlist_file
+    file_util.validate_loglist_file
+
+    date_manager = Date_manager()
+    date_manager.read_file()
+
+    #가상날짜 입력 프롬프트
+    while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
+            print("-------------------------------------------")
+            print("프로그램을 종료하려면 숫자 0을 입력해주세요.")
+           
+            command = input("프로그램에서 사용할 날짜를 입력해주세요 (yyyy-mm-dd):")
+            
+            is_valid, insert = date_manager.parse_insert(command)
+            
+            if is_valid:
+                if insert==0: # 0을 입력해 종료하려는 경우
+                    os.system('pause')
+                    sys.exit()
+                else:
+                    break
+    
+    #loan_manager = LoanManaer()
+    user_manager = UserManager()
     book_manager = BookManager()
+
+    
     while True:
         admin_menu()
         choice = int(input("원하는 메뉴의 번호를 입력해주세요: "))
