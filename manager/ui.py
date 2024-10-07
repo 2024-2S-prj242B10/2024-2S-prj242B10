@@ -107,13 +107,12 @@ class Prompt:
             register_name = input("이름:")
             command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):")
             
-            ##회원 가입 입력 유효성 검사 만든 거 합쳐야 함
-            ##insert는 is_valid가 False일 때 오류 문구 넘겨줘
+            
             is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)
             
             if is_valid:
                 if command=='y': 
-                    user_manager.add_user(register_name,register_id,register_pw)
+                    user_manager.add_user(register_name,register_id,register_pw) ## UserManager에서 add_user 함수 필요
                     print(f"{register_name}님 회원가입에 성공하였습니다.초기화면으로 돌아갑니다.")
                     break
                 else:
