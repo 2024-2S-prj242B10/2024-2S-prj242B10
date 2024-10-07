@@ -37,66 +37,69 @@ loglist.txt
 -대출 및 반납일 == 날짜문자열
 '''
 
-def validate_date_compare(user_input: str, available_date: str) -> bool:
-    # 문자열을 날짜로 변환
-    user_date = datetime.strptime(user_input, '%Y-%m-%d')
-    available_date_obj = datetime.strptime(available_date, '%Y-%m-%d')
+class Validate():
+    def validate_date_compare(user_input: str, available_date: str) -> bool:
+        # 문자열을 날짜로 변환
+        user_date = datetime.strptime(user_input, '%Y-%m-%d')
+        available_date_obj = datetime.strptime(available_date, '%Y-%m-%d')
+        # 날짜 비교
+        return user_date < available_date_obj
     
-    # 날짜 비교
-    return user_date < available_date_obj
+    def validate_user_name(user_name):
+        if re.fullmatch(r'^[A-Za-z]{1,20}$', user_name):
+            return True
+        return False
+    
 
-def validate_user_name(user_name):
-    if re.fullmatch(r'^[A-Za-z]{1,20}$', user_name):
-        return True
-    return False
-
-def validate_user_id(user_id):
-    if re.fullmatch(r'^[A-Za-z0-9]{3, 7}', user_id):
-        return True
-    return False
-
-def validate_user_pw(user_pw):
-    if re.fullmatch(r'^[A-Za-z0-9]{5, 10}', user_pw):
-        return True
-    return False
-
-def validate_loan_count(loan_count):
-    if re.fullmatch(r'^[0-3]$', loan_count):
-        return True
-    return False
-
-def validate_date(date):
-    if re.fullmatch(r'^(?:(?:20[0-2]\d)-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01]))$', date):
-        return True
-    return False
-
-def validate_t_f(insert) -> bool:
-    arrow = ['True','False']
-    if insert in arrow:
-        return True
-    else:
+    def validate_user_id(user_id):
+        if re.fullmatch(r'^[A-Za-z0-9]{3, 7}', user_id):
+            return True
         return False
 
-def validate_book_title(title): #도서 제목 정규표현식 변경
-    if re.fullmatch(r'^[a-zA-Z가-힣\s]{1,50}$', title):
-        return True
-    return False
-
-def validate_book_id(book_id):
-    if book_id.isdigit():
-        book_id = int(book_id)
-        if 1000 <= book_id <= 9999:
+    def validate_user_pw(user_pw):
+        if re.fullmatch(r'^[A-Za-z0-9]{5, 10}', user_pw):
             return True
-    return False
+        return False
 
-def validate_book_exist(book_id):
-    return any(book.book_id == book_id for book in BookManager().books)
+    def validate_loan_count(loan_count):
+        if re.fullmatch(r'^[0-3]$', loan_count):
+            return True
+        return False
 
-def validate_book_can_borrow(book_id):
-    for book in BookManager().books:
-        if book.book_id == book_id:
-            return not book.is_loaned
-    return False
+    def validate_date(date):
+        if re.fullmatch(r'^(?:(?:20[0-2]\d)-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01]))$', date):
+            return True
+        return False
+
+    def validate_t_f(insert) -> bool:
+        arrow = ['True','False']
+        if insert in arrow:
+            return True
+        else:
+            return False
+
+    def validate_book_title(title): #도서 제목 정규표현식 변경
+        if re.fullmatch(r'^[a-zA-Z가-힣\s]{1,50}$', title):
+            return True
+        return False
+
+    def validate_book_id(book_id):
+        if book_id.isdigit():
+            book_id = int(book_id)
+            if 1000 <= book_id <= 9999:
+                return True
+        return False
+
+    def validate_book_exist(book_id):
+        return any(book.book_id == book_id for book in BookManager().books)
+
+    def validate_book_can_borrow(book_id):
+        for book in BookManager().books:
+            if book.book_id == book_id:
+                return not book.is_loaned
+        return False
+    
+
 
 class File_util:
     def __init__(self):
