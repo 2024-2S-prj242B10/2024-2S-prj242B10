@@ -10,10 +10,10 @@ from manager.ui import Prompt
 def main():
     #무결성 검사
     file_util = File_util()
-    file_util.validate_startdate_file
-    file_util.validate_booklist_file
-    file_util.validate_userlist_file
-    file_util.validate_loglist_file
+    file_util.validate_startdate_file()
+    file_util.validate_booklist_file()
+    file_util.validate_userlist_file()
+    file_util.validate_loglist_file()
 
     date_manager = Date_manager()
     date_manager.read_file()
@@ -37,7 +37,7 @@ def main():
     #loan_manager = LoanManaer()
     user_manager = UserManager()
     book_manager = BookManager()
-    
+
     prompt = Prompt()
     # 초기 화면 프롬프트
     
