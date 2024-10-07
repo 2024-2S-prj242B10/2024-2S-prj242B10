@@ -6,13 +6,13 @@ class User:
     def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=False):
         self.user_name = user_name
         self.user_id = user_id
-        self.password = user_password
+        self.user_password = user_password
         self.loan_count = loan_count
         self.loan_date = loan_date
         self.is_admin = is_admin
 
     def __str__(self):
-        return f"{self.user_name}, {self.user_id}, {self.password}, {self.loan_count}, {self.loan_date}, {self.is_admin}"
+        return f"{self.user_name}, {self.user_id}, {self.user_password}, {self.loan_count}, {self.loan_date}, {self.is_admin}"
 
 class UserManager:
     def __init__(self, user_file_path="data/userlist.txt"):
@@ -20,6 +20,14 @@ class UserManager:
         self.user_file_path = user_file_path
         self.users = self.load_users()
     
+    def add_user(self,register_name,register_id,register_pw):
+        new_user = User(register_name,register_id,register_pw,0,None,False)
+        self.users.append(new_user)
+        with open(self.user_file_path, 'w', encoding='utf-8', newline='') as file:
+            writer = csv.writer(file)
+            for user in self.users:
+                writer.writerow([user.user_name,user.user_id,user.user_password,user.loan_count,user.loan_date, str(user.is_admin)])
+
     def load_users(self):
         users = []
         if os.path.exists(self.user_file_path):
