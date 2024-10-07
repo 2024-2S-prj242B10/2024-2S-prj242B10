@@ -119,7 +119,7 @@ class File_util:
                         os.system('pause')
                         sys.exit()
                     else:
-                        startdate_check = validate_date(lines) #시작 가능 날짜 유효성 검사
+                        startdate_check = Validate.validate_date(lines) #시작 가능 날짜 유효성 검사
                         if startdate_check:
                             self.recent_date = lines
                         else:
@@ -159,9 +159,9 @@ class File_util:
                             sys.exit()
                         else:
                             book_id,book_title,book_loan_check = parts[0],parts[1],parts[2]
-                            id_check = validate_book_id(book_id)
-                            title_check = validate_book_title(book_title)
-                            loan_check = validate_t_f(book_loan_check)
+                            id_check = Validate.validate_book_id(book_id)
+                            title_check = Validate.validate_book_title(book_title)
+                            loan_check = Validate.validate_t_f(book_loan_check)
                             if not (id_check and title_check and loan_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
@@ -177,9 +177,9 @@ class File_util:
                             sys.exit()
                         else:
                             book_id,book_title,book_loan_check = parts[0],parts[1],parts[2]
-                            id_check = validate_book_id(book_id)
-                            title_check = validate_book_title(book_title)
-                            loan_check = validate_t_f(book_loan_check)
+                            id_check = Validate.validate_book_id(book_id)
+                            title_check = Validate.validate_book_title(book_title)
+                            loan_check = Validate.validate_t_f(book_loan_check)
                             if not (id_check and title_check and loan_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
@@ -219,12 +219,12 @@ class File_util:
                         else:
                             use_name,user_id,user_pw = parts[0],parts[1],parts[2]
                             loan_count,loan_avail_date,access_level=parts[3],parts[4],parts[5]
-                            use_name_check = validate_user_name(use_name)
-                            user_id_check = validate_user_id(user_id)
-                            user_pw_check = validate_user_pw(user_pw)
-                            loan_count_check = validate_loan_count(loan_count)
-                            loan_avail_date_check = validate_date(loan_avail_date)
-                            access_level_check = validate_t_f(access_level)
+                            use_name_check = Validate.validate_user_name(use_name)
+                            user_id_check = Validate.validate_user_id(user_id)
+                            user_pw_check = Validate.validate_user_pw(user_pw)
+                            loan_count_check = Validate.validate_loan_count(loan_count)
+                            loan_avail_date_check = Validate.validate_date(loan_avail_date)
+                            access_level_check = Validate.validate_t_f(access_level)
                             if not (use_name_check and user_id_check and user_pw_check and loan_count_check and loan_avail_date_check and access_level_check):
                                 print('userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
@@ -242,12 +242,12 @@ class File_util:
                             #데이터 요소 문법 규칙 확인
                             use_name,user_id,user_pw = parts[0],parts[1],parts[2]
                             loan_count,loan_avail_date,access_level=parts[3],parts[4],parts[5]
-                            use_name_check = validate_user_name(use_name)
-                            user_id_check = validate_user_id(user_id)
-                            user_pw_check = validate_user_pw(user_pw)
-                            loan_count_check = validate_loan_count(loan_count)
-                            loan_avail_date_check = validate_date(loan_avail_date)
-                            access_level_check = validate_t_f(access_level)
+                            use_name_check = Validate.validate_user_name(use_name)
+                            user_id_check = Validate.validate_user_id(user_id)
+                            user_pw_check = Validate.validate_user_pw(user_pw)
+                            loan_count_check = Validate.validate_loan_count(loan_count)
+                            loan_avail_date_check = Validate.validate_date(loan_avail_date)
+                            access_level_check = Validate.validate_t_f(access_level)
                             if not (use_name_check and user_id_check and user_pw_check and loan_count_check and loan_avail_date_check and access_level_check):
                                 print('userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
@@ -286,10 +286,10 @@ class File_util:
                             sys.exit()
                         else:
                             book_id,user_id,is_loan,loan_date= parts[0],parts[1],parts[2],parts[3]
-                            book_id_check = validate_book_id(book_id)
-                            user_id_check = validate_user_id(user_id)
-                            is_loan_check = validate_t_f(is_loan)
-                            loan_date_check = validate_date(loan_date) # 정규 표현식 검사
+                            book_id_check = Validate.validate_book_id(book_id)
+                            user_id_check = Validate.validate_user_id(user_id)
+                            is_loan_check = Validate.validate_t_f(is_loan)
+                            loan_date_check = Validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
                                 print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
@@ -305,10 +305,10 @@ class File_util:
                             sys.exit()
                         else:
                             book_id,user_id,is_loan,loan_date= parts[0],parts[1],parts[2],parts[3]
-                            book_id_check = validate_book_id(book_id)
-                            user_id_check = validate_user_id(user_id)
-                            is_loan_check = validate_t_f(is_loan)
-                            loan_date_check = validate_date(loan_date) # 정규 표현식 검사
+                            book_id_check = Validate.validate_book_id(book_id)
+                            user_id_check = Validate.validate_user_id(user_id)
+                            is_loan_check = Validate.validate_t_f(is_loan)
+                            loan_date_check = Validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
                                 print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
