@@ -12,27 +12,28 @@ class Book:
         return f" {self.book_id}, {self.title}, {self.is_loaned}"
 
 class BookManager:
-    def __init__(self, file_path='data/booklist.txt'):
-        self.file_path = file_path
+    def __init__(self, book_file_path='data/booklist.txt', loglist_file_path='data/loglist.txt'):
+        self.book_file_path = book_file_path
+        self.loglist_file_path = loglist_file_path
         self.books = self.load_books()
 
     def load_books(self):
         books = []
-        if os.path.exists(self.file_path):
-            with open(self.file_path, 'r', encoding='utf-8') as file:
+        if os.path.exists(self.book_file_path):
+            with open(self.book_file_path, 'r', encoding='utf-8') as file:
                 reader = csv.reader(file)
                 for row in reader:
                     book_id, title, is_loaned = row
                     books.append(Book(book_id, title, is_loaned == 'True'))
         else:
-            print(f"{self.file_path} 파일이 존재하지 않아 새로 생성합니다.")
-            os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
-            with open(self.file_path, 'w', encoding='utf-8') as file:
+            print(f"{self.book_file_path} 파일이 존재하지 않아 새로 생성합니다.")
+            os.makedirs(os.path.dirname(self.book_file_path), exist_ok=True)
+            with open(self.book_file_path, 'w', encoding='utf-8') as file:
                 pass
         return books
 
     def save_books(self):
-        with open(self.file_path, 'w', encoding='utf-8', newline='') as file:
+        with open(self.book_file_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
             for book in self.books:
                 writer.writerow([book.book_id, book.title, str(book.is_loaned)])
@@ -43,6 +44,22 @@ class BookManager:
             new_book_id = str(random.randint(1000, 9999))
             if new_book_id not in existing_ids:
                 return new_book_id
+
+    def update_loan_status(self):
+        with open(self.loglist_file_path, "r", encoding="utf-8") as file:
+            loan_status = {}
+            for line in file:
+                book_id, user_id, is_loaned, date = line.strip().split(", ")
+                loan_status[book_id] = is_loaned == "True"
+
+            for book in self.books:
+                if book.book_id in loan_status:
+                    book.is_loaned = loan_status[book.book_id]
+
+    def loan_book(self, book_id, user_id, date):
+        with open(self.loglist_file_path, "a", encoding="utf-8") as file:
+            file.write(f"{book_id}, {user_id}, True, {date}\n")
+        self.update_loan_status()
 
     def register_book(self, title):
         new_book_id = self.generate_book_id()
