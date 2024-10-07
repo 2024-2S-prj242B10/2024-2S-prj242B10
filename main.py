@@ -1,21 +1,21 @@
 import os
 import sys
 from src.book import BookManager
-from manager.validation import validate_book_title, validate_book_id, validate_book_exist, validate_book_can_borrow,File_util
+from manager.validation import Validate,File_util
 from manager.ui import admin_menu
 from src.user import UserManager
-from src.date_manager import Date_manager
+from src.date_manager import DateManager
 from manager.ui import Prompt
 
 def main():
     #무결성 검사
     file_util = File_util()
-    file_util.validate_startdate_file
-    file_util.validate_booklist_file
-    file_util.validate_userlist_file
-    file_util.validate_loglist_file
+    file_util.validate_startdate_file()
+    file_util.validate_booklist_file()
+    file_util.validate_userlist_file()
+    file_util.validate_loglist_file()
 
-    date_manager = Date_manager()
+    date_manager = DateManager()
     date_manager.read_file()
 
     #가상날짜 입력 프롬프트
@@ -37,7 +37,7 @@ def main():
     #loan_manager = LoanManaer()
     user_manager = UserManager()
     book_manager = BookManager()
-    
+
     prompt = Prompt()
     # 초기 화면 프롬프트
     
@@ -56,9 +56,8 @@ def main():
                 print("프로그램을 종료합니다")
                 break
             elif command == 1:
-                is_valid,logined_id = prompt.login_prompt() # 파라미터로 manager 객체 넣어야 함
+                is_valid,is_manager=prompt.login_prompt(user_manager) # 파라미터로 manager 객체 넣어야 함
                 if is_valid:
-                    is_manager = True ## 로그인 된 아이디가 관리자인가 여부 파악 후 각 프롬프트로 넘김
                     if is_manager:
                         prompt.manager_menu_prompt() # 관리자 프롬프트로 넘어가기
                     else:
@@ -66,7 +65,7 @@ def main():
                 else:
                     continue
             elif command == 2:
-                is_valid,insert = prompt.register() # 회원 가입
+                prompt.register(user_manager) # 회원 가입
 
         #mod에 오류 메시지를 반환하도록 설계
         else:   

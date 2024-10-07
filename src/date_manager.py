@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 
 
-class Date_manager():
+class DateManager():
     def __init__(self):
          self.virtual_date = "2000-01-01"
     
