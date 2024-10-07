@@ -5,7 +5,7 @@ from manager.validation import validate_book_title, validate_book_id, validate_b
 from manager.ui import admin_menu
 from src.user import UserManager
 from src.date_manager import Date_manager
-
+from manager.ui import Prompt
 
 def main():
     #무결성 검사
@@ -37,8 +37,43 @@ def main():
     #loan_manager = LoanManaer()
     user_manager = UserManager()
     book_manager = BookManager()
-
     
+    prompt = Prompt()
+    # 초기 화면 프롬프트
+    
+    arrow = [0,1,2] # 허용 명령어
+    while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
+        print("-------------------------------------------")
+        print("[도서 대출 관리 프로그램]")
+        print("0. 종료")
+        print("1. 로그인")
+        print("2. 회원가입")
+        
+        command = int(input("원하는 메뉴의 번호를 입력해 주세요:"))
+        
+        if command in arrow:
+            if command == 0:
+                print("프로그램을 종료합니다")
+                break
+            elif command == 1:
+                is_valid,logined_id = prompt.login_prompt() # 파라미터로 manager 객체 넣어야 함
+                if is_valid:
+                    is_manager = True ## 로그인 된 아이디가 관리자인가 여부 파악 후 각 프롬프트로 넘김
+                    if is_manager:
+                        prompt.manager_menu_prompt() # 관리자 프롬프트로 넘어가기
+                    else:
+                        prompt.user_menu_prompt() # 사용자 프롬프트로 넘어가기
+                else:
+                    continue
+            elif command == 2:
+                is_valid,insert = prompt.register() # 회원 가입
+
+        #mod에 오류 메시지를 반환하도록 설계
+        else:   
+            print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')  # 오류 메시지 출력
+
+
+    '''
     while True:
         admin_menu()
         choice = int(input("원하는 메뉴의 번호를 입력해주세요: "))
@@ -88,7 +123,7 @@ def main():
 
         else:
             print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")
-
+    '''
 
 if __name__ == "__main__":
     main()
