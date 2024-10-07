@@ -13,31 +13,34 @@ def admin_menu():
 class Prompt:
 
     # 로그인 프롬프트
-    def login_prompt(self)-> tuple[bool,any]:
-
-        while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
+    def login_prompt(self,user_manager)-> tuple[bool,bool]:
+        
+        while True:  # 잘못된 입력이면 로그인 프롬프트 반복
             print("-------------------------------------------")
-            print("[관리자 로그인]")
-            manager_id = input("아이디:")
-            manager_pw = input("비밀번호:")
-            command = input("로그인 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):")
+            print("[로그인]")
+            logined_id = input("아이디:")
+            logined_pw = input("비밀번호:")
+            command = input("로그인 하시겠습니까? (y/다른 키를 입력하면 초기화면으로 이동합니다.):")
             
-            #아이디 비번 모두 통과해야 is_valid가 True
-            is_valid,insert = self.parser.manager_login_parse(manager_id,manager_pw,command) #날짜 검사 파서 만들어야함
             
-            if is_valid:
-                if command=='y': # 'y'를 받을 때만 관리자 아이디 넘기기
-                    #정상 입력한 경우
-                    # config에 현재 사용중인 사람으로 id 저장
-                    ''' insert ID만 반환하는걸로?'''
-                    return True,manager_id
+            if command == 'y':
+                is_valid,is_manager = user_manager.user_login(user_manager,logined_id,logined_pw)
+                if is_valid:
+                    if is_manager:
+                        print("관리자 모드로 접속합니다. 관리자 메뉴화면으로 이동합니다.")
+                        return is_valid,is_manager
+                    else:
+                        print("사용자 모드로 접속합니다. 사용자 메뉴화면으로 이동합니다.")
+                        return is_valid,is_manager
                 else:
-                    # 사용자가 command로 y 이외의 값을 입력한 경우
-                    return False
-                
-            #mod에 오류 메시지를 반환하도록 설계 다르게 해도 됨
-            else:  
-                print(insert)  # 오류 메시지 출력
+                    print("로그인에 실패했습니다. 다시 입력해주세요.")
+
+            else:
+                print("초기화면으로 이동합니다.")
+                return False,False
+            
+            
+            
 
     #관리자 메뉴 프롬프트
     def manager_menu_prompt(self):
