@@ -3,39 +3,6 @@ import os
 import sys
 from src.book import BookManager
 from datetime import datetime
-'''
-정규표현식
-startdate.txt
--1줄만 허용
-
--날짜문자열: ^(?:(?:20[0-2]\d)-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01]))$ //
-
-booklist.txt
--1줄 이상 40줄 이하
-
--도서ID : 1000~9999 //
--도서제목 : ^[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,48}[a-zA-Z가-힣0-9])?$ /?
--대출 여부: True, False //
-
-userlist.txt
--1줄 이상 11줄 이하
--0줄일 경우 초기화 해야함
-
--사용자이름 : [A-Za-z]{1, 20} //
--사용자 ID : [A-Za-z0-9]{3, 7} //
--사용자 비밀번호 : [A-Za-z0-9]{5, 10} //
--대출 권수 : 0~3 //
--대출 가능 날짜 == 날짜 문자열
--사용자 접근 등급 True, False
-
-loglist.txt
-- 0줄 이상 도서 정보행 개수 이하
-
--도서ID == boolist거와 동일
--사용자ID == userlist와 동일
--대출 여부 == True, False
--대출 및 반납일 == 날짜문자열
-'''
 
 class Validate():
     def validate_date_compare(user_input: str, available_date: str) -> bool:
@@ -52,12 +19,12 @@ class Validate():
     
 
     def validate_user_id(user_id):
-        if re.fullmatch(r'^[A-Za-z0-9]{3, 7}', user_id):
+        if re.fullmatch(r'^[A-Za-z0-9]{3,7}', user_id):
             return True
         return False
 
     def validate_user_pw(user_pw):
-        if re.fullmatch(r'^[A-Za-z0-9]{5, 10}', user_pw):
+        if re.fullmatch(r'^[A-Za-z0-9]{5,10}', user_pw):
             return True
         return False
 
@@ -103,10 +70,10 @@ class Validate():
 
 class File_util:
     def __init__(self):
-        self.book_count
+        self.book_count =0
         self.recent_date ='2000-01-01'
-        self.user_count
-        self.loan_count #loglist 행의 개수
+        self.user_count =0
+        self.loan_count =0#loglist 행의 개수
 
     #startdate.txt 무결성
     def validate_startdate_file(self):
@@ -119,9 +86,9 @@ class File_util:
                         os.system('pause')
                         sys.exit()
                     else:
-                        startdate_check = Validate.validate_date(lines) #시작 가능 날짜 유효성 검사
+                        startdate_check = Validate.validate_date(lines[0]) #시작 가능 날짜 유효성 검사
                         if startdate_check:
-                            self.recent_date = lines
+                            self.recent_date = lines[0]
                         else:
                             print("startdate.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
                 else:
@@ -130,10 +97,11 @@ class File_util:
                     sys.exit()
         else:
             try:
-                with open('data/startdate.txt','w',encoding='utf-8') as file_w:
-                    file_w.write('2000-01-01')
+                os.makedirs(os.path.dirname('data/startdate.txt'), exist_ok=True)
+                with open('data/startdate.txt', 'w', encoding='utf-8') as file:
+                    file.write('2000-01-01')
                 print('data 디렉토리에 startdate.txt파일 생성을 완료했습니다.')
-            except:
+            except Exception as e:  
                 print('data 디렉토리에 startdate.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 os.system('pause')
                 sys.exit()
@@ -148,11 +116,11 @@ class File_util:
                     os.system('pause')
                     sys.exit()
                 elif len(lines)==1:
-                    if lines == '': #빈 파일일 경우
+                    if lines[0] == '': #빈 파일일 경우
                         self.book_count = 0
                         return
                     else:
-                        parts = lines.split(',')
+                        parts = lines[0].split(',')
                         if not len(parts)==3:
                             print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             os.system('pause')
@@ -206,12 +174,12 @@ class File_util:
                     os.system('pause')
                     sys.exit()
                 elif len(lines)==1:
-                    if lines == '': #빈 파일일 경우
+                    if lines[0]== '': #빈 파일일 경우
                         with open('data/userlist.txt','w',encoding='utf-8') as file_w:
                             file_w.write('ADMIN,admin,a1234,0,2000-01-01,False')
                         self.user_count = 1
                     else:
-                        parts = lines.split(',')
+                        parts = lines[0].split(',')
                         if not len(parts)==6:
                             print('userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             os.system('pause')
@@ -271,16 +239,13 @@ class File_util:
         if os.path.exists('data/loglist.txt'):
             with open('data/loglist.txt','r',encoding='utf-8') as file:
                 lines = file.read().rstrip().split('\n')
-                if len(lines) > self.book_count:
-                    print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
-                    os.system('pause')
-                    sys.exit()
-                elif len(lines)==1:
-                    if lines == '': #빈 파일일 경우
+                if len(lines)==1:
+                    if lines[0]== '': #빈 파일일 경우
                         self.loan_count = 0
                     else:
-                        parts = lines.split(',')
+                        parts = lines[0].split(',')
                         if not len(parts)==4:
+                            print("1")
                             print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             os.system('pause')
                             sys.exit()
@@ -291,11 +256,16 @@ class File_util:
                             is_loan_check = Validate.validate_t_f(is_loan)
                             loan_date_check = Validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
+                                print("2")
                                 print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
                                 sys.exit()
                             self.loan_count = 1
                 else:
+                    if len(lines) > self.book_count:
+                        print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                        os.system('pause')
+                        sys.exit()
                     line_count =0
                     for line in lines:
                         parts = line.split(',')
@@ -310,6 +280,7 @@ class File_util:
                             is_loan_check = Validate.validate_t_f(is_loan)
                             loan_date_check = Validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
+                                print("4")
                                 print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
                                 sys.exit()
