@@ -28,7 +28,7 @@ def main():
             is_valid, insert = date_manager.parse_insert(command)
             
             if is_valid:
-                if insert==0: # 0을 입력해 종료하려는 경우
+                if insert=='0': # 0을 입력해 종료하려는 경우
                     os.system('pause')
                     sys.exit()
                 else:

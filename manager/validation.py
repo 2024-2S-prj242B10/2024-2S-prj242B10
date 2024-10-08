@@ -245,7 +245,6 @@ class File_util:
                     else:
                         parts = lines[0].split(',')
                         if not len(parts)==4:
-                            print("1")
                             print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             os.system('pause')
                             sys.exit()
@@ -256,7 +255,6 @@ class File_util:
                             is_loan_check = Validate.validate_t_f(is_loan)
                             loan_date_check = Validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
-                                print("2")
                                 print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
                                 sys.exit()
@@ -280,7 +278,6 @@ class File_util:
                             is_loan_check = Validate.validate_t_f(is_loan)
                             loan_date_check = Validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
-                                print("4")
                                 print('loglist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
                                 sys.exit()
