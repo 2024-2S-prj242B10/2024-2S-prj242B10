@@ -59,7 +59,7 @@ def main():
                 is_valid,is_manager=prompt.login_prompt(user_manager) # 파라미터로 manager 객체 넣어야 함
                 if is_valid:
                     if is_manager:
-                        prompt.manager_menu_prompt() # 관리자 프롬프트로 넘어가기
+                        prompt.manager_menu_prompt(book_manager) # 관리자 프롬프트로 넘어가기
                     else:
                         prompt.user_menu_prompt() # 사용자 프롬프트로 넘어가기
                 else:
