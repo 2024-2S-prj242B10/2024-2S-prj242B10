@@ -12,7 +12,7 @@ class DateManager():
     def read_file(self):
             with open('data/startdate.txt', 'r', encoding='utf-8') as file:
                 reader = csv.reader(file)
-                self.virtual_date = reader    
+                self.virtual_date = next(reader)[0]
 
     
     #시작 가능 날짜 정규표현식 확인
@@ -29,7 +29,7 @@ class DateManager():
             file.write(save_date)
     
     #사용 가능한 날짜 여부 (현재 가상날짜 이전인지)
-    def is_available_date(user_input: str, available_date: str) -> bool:
+    def is_available_date(self,user_input: str, available_date: str) -> bool:
         # 문자열을 날짜로 변환
         user_date = datetime.strptime(user_input, '%Y-%m-%d')
         available_date_obj = datetime.strptime(available_date, '%Y-%m-%d')
