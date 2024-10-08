@@ -103,29 +103,28 @@ class Validate():
 
 class File_util:
     def __init__(self):
-        self.book_count
+        self.book_count = 0
         self.recent_date ='2000-01-01'
-        self.user_count
-        self.loan_count #loglist 행의 개수
+        self.user_count = 0
+        self.loan_count = 0 #loglist 행의 개수
 
     #startdate.txt 무결성
     def validate_startdate_file(self):
         if os.path.exists('data/startdate.txt'):
-            with open('data/startdate.txt','r',encoding='utf-8') as file:
+            with open('data/startdate.txt', 'r', encoding='utf-8') as file:
                 lines = file.read().rstrip().split('\n')
-                if len(lines)==1:
-                    if lines =='': # 빈 파일일 경우
-                        print("startdate.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
-                        os.system('pause')
-                        sys.exit()
-                    else:
-                        startdate_check = Validate.validate_date(lines) #시작 가능 날짜 유효성 검사
-                        if startdate_check:
-                            self.recent_date = lines
-                        else:
-                            print("startdate.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
+
+                if not lines or (len(lines) == 1 and lines[0] == ''):
+                    print("startdate.txt 파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
+                    os.system('pause')
+                    sys.exit()
+
+                valid_dates = [line for line in lines if Validate.validate_date(line)]
+
+                if len(valid_dates) == 1:
+                    self.recent_date = valid_dates[0]
                 else:
-                    print("startdate.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
+                    print("startdate.txt 파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
                     os.system('pause')
                     sys.exit()
         else:
