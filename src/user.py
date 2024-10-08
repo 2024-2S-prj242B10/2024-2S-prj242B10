@@ -21,7 +21,7 @@ class UserManager:
         self.users = self.load_users()
     
     def add_user(self,register_name,register_id,register_pw):
-        new_user = User(register_name,register_id,register_pw,0,None,False)
+        new_user = User(register_name,register_id,register_pw,0,'2000-01-01',False)
         self.users.append(new_user)
         with open(self.user_file_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
@@ -50,7 +50,7 @@ class UserManager:
         is_valid = False
         is_manager = False
         for user in user_manager.users:
-            if (logined_id == user.user_id and logined_pw == user.user_pw):
+            if (logined_id == user.user_id and logined_pw == user.user_password):
                 is_valid = True
                 if logined_id =='admin':
                     is_manager = True
@@ -66,12 +66,11 @@ class UserManager:
             register_id = register_id.strip()
             register_pw = register_pw.strip()
             register_name = register_name.strip()
-            
             is_id = self.validate.validate_user_id(register_id)
             is_pw = self.validate.validate_user_pw(register_pw)
             is_name = self.validate.validate_user_name(register_name)
             if not (is_id and is_pw and is_name):
                 return False,"아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요."
             else:
-                return True
+                return True,None
 

@@ -40,11 +40,9 @@ class Prompt:
                 print("초기화면으로 이동합니다.")
                 return False,False
             
-            
-            
-
     #관리자 메뉴 프롬프트
     def manager_menu_prompt(self, book_manager):
+        validate = Validate()
         arrow = [0,1,2,3,4]
         while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
@@ -54,7 +52,13 @@ class Prompt:
             print("2. 도서 삭제")
             print("3. 도서 검색")
             print("4. 도서 조회")
-            command = int(input("원하는 메뉴의 번호를 입력해 주세요:"))
+            command = input("원하는 메뉴의 번호를 입력해 주세요:")
+            
+            if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
+                command = int(command)
+            else:
+                print('올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.')
+                continue
             
             if command in arrow:
                 if command == 0: #로그아웃
@@ -64,7 +68,7 @@ class Prompt:
                 elif command == 1:
                     print("등록할 도서의 정보를 입력해주세요.")
                     register_title = input("도서 제목: ").strip()
-                    if Validate.validate_book_title(register_title):
+                    if validate.validate_book_title(register_title):
                         if input("도서를 등록하시겠습니까? (y / 다른 키를 입력하면 등록을 취소하고 관리자 메뉴로 이동합니다.):").strip() == 'y':
                             book_manager.register_book(register_title)
                         else:
@@ -77,9 +81,9 @@ class Prompt:
                 elif command == 2: # 도서 삭제
                     print("삭제할 도서의 정보를 입력해주세요.")
                     book_id = input("도서 ID: ").strip()
-                    if Validate.validate_book_id(book_id):
-                        if Validate.validate_book_exist(book_id):
-                            if Validate.validate_book_can_borrow(book_id):
+                    if validate.validate_book_id(book_id):
+                        if validate.validate_book_exist(book_id):
+                            if validate.validate_book_can_borrow(book_id):
                                 if input("도서를 삭제하시겠습니까? (y / 다른 키를 입력하면 등록을 취소하고 관리자 메뉴로 이동합니다.):").strip() == 'y':
                                     book_manager.delete_book(book_id)
                                 else:
@@ -116,8 +120,13 @@ class Prompt:
             print("2. 도서 반납")
             print("3. 도서 검색")
             print("4. 도서 조회")
-            command = int(input("원하는 메뉴의 번호를 입력해 주세요:"))
+            command = input("원하는 메뉴의 번호를 입력해 주세요:")
             
+            if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
+                command = int(command)
+            else:
+                print('올바르지 않은 입력형식입니다. 다시 입력해 주세요')
+                continue
             
             if command in arrow:
                 if command == 0: # 로그아웃
@@ -149,11 +158,10 @@ class Prompt:
             
             if is_valid:
                 if command=='y': 
-                    user_manager.add_user(register_name,register_id,register_pw) ## UserManager에서 add_user 함수 필요
+                    user_manager.add_user(register_name,register_id,register_pw) 
                     print(f"{register_name}님 회원가입에 성공하였습니다.초기화면으로 돌아갑니다.")
                     break
                 else:
-                    #사용자가 command로 y 이외의 값을 입력한 경우
                     print("초기화면으로 돌아갑니다.")
                     break
             else:
