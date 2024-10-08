@@ -99,7 +99,7 @@ def update_log(user_id, book_id, borrow, return_date):
 
     # 새로운 도서를 대출하는 경우 추가
     if not is_existing_log:
-        new_log_entry = f"{book_id}, {user_id}, {borrow}, {return_date}\n"
+        new_log_entry = f"{book_id},{user_id},{borrow},{return_date}\n"
         updated_logs.append(new_log_entry)
 
     # 로그 파일에 다시 기록
