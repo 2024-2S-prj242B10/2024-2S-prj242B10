@@ -1,12 +1,13 @@
 import os
 import sys
-from src.book import BookManager
 from manager.validation import Validate,File_util
 from manager.ui import admin_menu
-from src.user import UserManager
-from src.date_manager import DateManager
 from manager.ui import Prompt
-
+from src.date_manager import DateManager
+from src.user import *
+from src.book import BookManager
+# from src.user import UserManager
+  
 def main():
     #무결성 검사
     file_util = File_util()
@@ -62,12 +63,12 @@ def main():
                 print("프로그램을 종료합니다")
                 break
             elif command == 1:
-                is_valid,is_manager=prompt.login_prompt(user_manager) # 파라미터로 manager 객체 넣어야 함
+                is_valid,is_manager,user_id=prompt.login_prompt(user_manager) # 파라미터로 manager 객체 넣어야 함
                 if is_valid:
                     if is_manager:
                         prompt.manager_menu_prompt(book_manager) # 관리자 프롬프트로 넘어가기
                     else:
-                        prompt.user_menu_prompt() # 사용자 프롬프트로 넘어가기
+                        prompt.user_menu_prompt(book_manager, user_id) # 사용자 프롬프트로 넘어가기
                 else:
                     continue
             elif command == 2:
@@ -76,8 +77,6 @@ def main():
         #mod에 오류 메시지를 반환하도록 설계
         else:   
             print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')  # 오류 메시지 출력
-
-
 
 if __name__ == "__main__":
     main()

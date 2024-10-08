@@ -1,6 +1,7 @@
 from manager.validation import *
 from src.user import *
 from src.book import *
+
 def admin_menu():
     """관리자 메뉴"""
     print("[관리자 메뉴]")
@@ -14,7 +15,7 @@ def admin_menu():
 class Prompt:
 
     # 로그인 프롬프트
-    def login_prompt(self,user_manager)-> tuple[bool,bool]:
+    def login_prompt(self,user_manager)-> tuple[bool,bool,int]:
         
         while True:  # 잘못된 입력이면 로그인 프롬프트 반복
             print("-------------------------------------------")
@@ -29,16 +30,16 @@ class Prompt:
                 if is_valid:
                     if is_manager:
                         print("관리자 모드로 접속합니다. 관리자 메뉴화면으로 이동합니다.")
-                        return is_valid,is_manager
+                        return is_valid,is_manager,logined_id
                     else:
                         print("사용자 모드로 접속합니다. 사용자 메뉴화면으로 이동합니다.")
-                        return is_valid,is_manager
+                        return is_valid,is_manager,logined_id
                 else:
                     print("로그인에 실패했습니다. 다시 입력해주세요.")
 
             else:
                 print("초기화면으로 이동합니다.")
-                return False,False
+                return False,False,0
             
     #관리자 메뉴 프롬프트
     def manager_menu_prompt(self, book_manager):
@@ -109,7 +110,7 @@ class Prompt:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
 
     # 사용자 메뉴 프롬프트
-    def user_menu_prompt(self):
+    def user_menu_prompt(self, book_manager, user_id):
 
         arrow = [0,1,2,3,4]
         while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
@@ -133,12 +134,16 @@ class Prompt:
                     break
                 #아래는 각 프롬프트로 이동해야함
                 elif command == 1: # 도서 대출
+                    borrow_book(user_id)
                     continue
                 elif command == 2: # 도서 반납
+                    return_book(user_id)
                     continue
                 elif command == 3: # 도서 검색
+                    search_book(book_manager)
                     continue
                 elif command == 4: # 도서 조회
+                    view_books(book_manager)
                     continue
             else:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
