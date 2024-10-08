@@ -110,7 +110,7 @@ class Prompt:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
 
     # 사용자 메뉴 프롬프트
-    def user_menu_prompt(self, user_id):
+    def user_menu_prompt(self, book_manager, user_id):
 
         arrow = [0,1,2,3,4]
         while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
@@ -140,10 +140,10 @@ class Prompt:
                     return_book(user_id)
                     continue
                 elif command == 3: # 도서 검색
-                    search_book()
+                    search_book(book_manager)
                     continue
                 elif command == 4: # 도서 조회
-                    view_books()
+                    view_books(book_manager)
                     continue
             else:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력

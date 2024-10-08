@@ -3,6 +3,7 @@ from manager.validation import Validate
 import os
 from src.user_utils import *
 import csv
+from src.book import *
 
 
 class User:
@@ -207,47 +208,16 @@ def return_book(user_id):
             return
 
 # 도서 검색 함수
-def search_book():
-
+def search_book(book_manager):
     print("--------------------------------------------------------------")
     print("[도서 검색]")
 
     # 검색할 도서 제목 입력 받기
-    search_term = input("검색할 도서 제목을 입력해주세요: ").strip()  # 선후행 공백 제거
-
-    # 도서 목록 파일에서 도서 제목 검색
-    found_books = []
-
-    with open(book_file, 'r', encoding='utf-8') as f:
-        books = f.readlines()
-
-    for book in books:
-        book_info = book.strip().split(',')  # 도서 정보 파싱
-        book_id = book_info[0].strip()  # 도서 ID
-        book_title = book_info[1].strip()  # 도서 제목
-        book_status = book_info[2].strip()  # 도서 대출 여부
-
-        # 입력한 검색어와 도서 제목 비교
-        if search_term == book_title:  # 정확히 일치할 경우
-            found_books.append(f"{book_id} - {book_title} - {book_status}")
-
-    # 검색 결과 출력
-    if found_books:
-        print("\n".join(found_books))  # 일치하는 도서 목록 출력
-    else:
-        print("입력하신 제목의 도서가 존재하지 않습니다. 사용자 메뉴로 돌아갑니다.")
-
+    search_title = input("\n검색할 도서 제목을 입력해주세요: ").strip()
+    book_manager.search_book_by_title(search_title)
 
 # 도서 조회 기능
-def view_books():
-    with open(book_file, 'r', encoding='utf-8') as f:
-        books = f.readlines()
-
-    if books:
-        print("[도서 목록]")
-        for book in books:
-            print(book.strip())
-    else:
-        print("조회할 도서가 존재하지 않습니다.")
+def view_books(book_manager):
+    book_manager.display_books()
 
 

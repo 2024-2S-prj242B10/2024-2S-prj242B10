@@ -68,7 +68,7 @@ def main():
                     if is_manager:
                         prompt.manager_menu_prompt(book_manager) # 관리자 프롬프트로 넘어가기
                     else:
-                        prompt.user_menu_prompt(user_id) # 사용자 프롬프트로 넘어가기
+                        prompt.user_menu_prompt(book_manager, user_id) # 사용자 프롬프트로 넘어가기
                 else:
                     continue
             elif command == 2:
