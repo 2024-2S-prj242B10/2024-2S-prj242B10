@@ -48,7 +48,14 @@ def main():
         print("0. 종료")
         print("1. 로그인")
         print("2. 회원가입")
-        command = int(input("원하는 메뉴의 번호를 입력해 주세요:"))
+
+        command = input("원하는 메뉴의 번호를 입력해 주세요:")
+
+        if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
+            command = int(command)
+        else:
+            print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
+            continue
         
         if command in arrow:
             if command == 0:
@@ -58,7 +65,7 @@ def main():
                 is_valid,is_manager=prompt.login_prompt(user_manager) # 파라미터로 manager 객체 넣어야 함
                 if is_valid:
                     if is_manager:
-                        prompt.manager_menu_prompt() # 관리자 프롬프트로 넘어가기
+                        prompt.manager_menu_prompt(book_manager) # 관리자 프롬프트로 넘어가기
                     else:
                         prompt.user_menu_prompt() # 사용자 프롬프트로 넘어가기
                 else:
