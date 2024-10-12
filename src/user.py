@@ -40,11 +40,6 @@ class UserManager:
                 for row in reader:
                     user_name, user_id, user_password,loan_count,loan_date,is_admin = row
                     users.append(User(user_name, user_id,user_password,loan_count,loan_date,is_admin))
-        else:
-            print(f"{self.user_file_path} 파일이 존재하지 않아 새로 생성합니다.")
-            os.makedirs(os.path.dirname(self.user_file_path), exist_ok=True)
-            with open(self.user_file_path, 'w', encoding='utf-8') as file:
-                file.write("ADMIN,admin,a1234,0,2000-01-01,False")
         return users
 
 
