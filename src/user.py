@@ -204,7 +204,7 @@ def return_book(user_id):
             is_overdue = return_book_process(user_id, book_id)
 
             if is_overdue:
-                next_borrow_date = get_next_borrow_date(user_id)
+                next_borrow_date = calculate_next_borrow_date(get_current_date())
                 print(f"[{book_id}] - {get_book_title(book_id)} 도서를 반납했습니다.")
                 print(f"연체된 도서이므로 다음 도서 대출 가능 날짜는 {next_borrow_date}입니다.")
             else:

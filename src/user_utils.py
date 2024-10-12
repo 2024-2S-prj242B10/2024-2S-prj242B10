@@ -225,13 +225,6 @@ def return_book_process(user_id, book_id):
 
     return is_overdue  # 연체 여부를 반환
 
-
-def get_next_borrow_date(user_id):
-    # 다음 대출 가능 날짜 계산 로직 (현재 날짜 + 5일)
-    return_date = datetime.strptime(get_current_date(), "%Y-%m-%d") + timedelta(days=5)
-    return return_date.strftime("%Y-%m-%d")
-
-
 def is_book_borrowed_by_user(book_id, user_id):
     with open(log_file, 'r', encoding='utf-8') as f:
         logs = f.readlines()
@@ -260,7 +253,7 @@ def get_return_date(book_id, user_id):
 def calculate_next_borrow_date(current_date):
     date_format = "%Y-%m-%d"
     current_date_obj = datetime.strptime(current_date, date_format)  # 현재 날짜를 datetime 객체로 변환
-    next_borrow_date_obj = current_date_obj + timedelta(days=5)  # 5일 후 대출 가능
+    next_borrow_date_obj = current_date_obj + timedelta(days=5)  # days일 후 대출 가능
     return next_borrow_date_obj.strftime(date_format)  # 다시 문자열 형식으로 변환하여 반환
 
 
