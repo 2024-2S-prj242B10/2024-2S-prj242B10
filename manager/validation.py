@@ -5,12 +5,6 @@ from src.book import BookManager
 from datetime import datetime
 
 class Validate():
-    def validate_date_compare(self,user_input: str, available_date: str) -> bool:
-        # 문자열을 날짜로 변환
-        user_date = datetime.strptime(user_input, '%Y-%m-%d')
-        available_date_obj = datetime.strptime(available_date, '%Y-%m-%d')
-        # 날짜 비교
-        return user_date < available_date_obj
     
     def validate_user_name(self,user_name):
         if re.fullmatch(r'^[A-Za-z]{1,20}$', user_name):
