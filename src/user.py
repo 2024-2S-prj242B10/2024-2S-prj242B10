@@ -151,9 +151,6 @@ def return_book(user_id):
     if borrow_count == 0:
         print("대출한 도서가 없어 반납을 진행할 수 없습니다. 사용자 메뉴로 돌아갑니다.")
         return
-    elif borrow_count < 1 or borrow_count > 3:
-        print("대출 권수가 1권 이상, 3권 이하이어야 합니다. 사용자 메뉴로 돌아갑니다.")
-        return
 
     # 대출 중인 도서 조회
     print("--------------------------------------------------------------")
