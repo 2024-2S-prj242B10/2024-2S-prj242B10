@@ -12,9 +12,17 @@ class Validate():
         return False
     
 
-    def validate_user_id(self,user_id):
+    def validate_user_id(self,user_id,file_validate=False):
+
         if re.fullmatch(r'^[A-Za-z0-9]{3,7}', user_id):
+            from src.user import UserManager
+            user_manager = UserManager()
+            if not file_validate: #file에 대한 무결성검사를 할 때는 중복 검사 안하도록 함.
+                for user in user_manager.users:
+                    if user.user_id == user_id:
+                        return False 
             return True
+
         return False
 
     def validate_user_pw(self,user_pw):
@@ -182,7 +190,7 @@ class File_util:
                             use_name,user_id,user_pw = parts[0],parts[1],parts[2]
                             loan_count,loan_avail_date,access_level=parts[3],parts[4],parts[5]
                             use_name_check = self.validate.validate_user_name(use_name)
-                            user_id_check = self.validate.validate_user_id(user_id)
+                            user_id_check = self.validate.validate_user_id(user_id, True) #파일쪽 무결성
                             user_pw_check = self.validate.validate_user_pw(user_pw)
                             loan_count_check = self.validate.validate_loan_count(loan_count)
                             loan_avail_date_check = self.validate.validate_date(loan_avail_date)
@@ -205,13 +213,13 @@ class File_util:
                             use_name,user_id,user_pw = parts[0],parts[1],parts[2]
                             loan_count,loan_avail_date,access_level=parts[3],parts[4],parts[5]
                             use_name_check = self.validate.validate_user_name(use_name)
-                            user_id_check = self.validate.validate_user_id(user_id)
+                            user_id_check = self.validate.validate_user_id(user_id, True)
                             user_pw_check = self.validate.validate_user_pw(user_pw)
                             loan_count_check = self.validate.validate_loan_count(loan_count)
                             loan_avail_date_check = self.validate.validate_date(loan_avail_date)
                             access_level_check = self.validate.validate_t_f(access_level)
                             if not (use_name_check and user_id_check and user_pw_check and loan_count_check and loan_avail_date_check and access_level_check):
-                                print('userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('4 userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 os.system('pause')
                                 sys.exit()
                         line_count +=1
@@ -245,7 +253,7 @@ class File_util:
                         else:
                             book_id,user_id,is_loan,loan_date= parts[0],parts[1],parts[2],parts[3]
                             book_id_check = self.validate.validate_book_id(book_id)
-                            user_id_check = self.validate.validate_user_id(user_id)
+                            user_id_check = self.validate.validate_user_id(user_id, True)
                             is_loan_check = self.validate.validate_t_f(is_loan)
                             loan_date_check = self.validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
@@ -268,7 +276,7 @@ class File_util:
                         else:
                             book_id,user_id,is_loan,loan_date= parts[0],parts[1],parts[2],parts[3]
                             book_id_check = self.validate.validate_book_id(book_id)
-                            user_id_check = self.validate.validate_user_id(user_id)
+                            user_id_check = self.validate.validate_user_id(user_id, True)
                             is_loan_check = self.validate.validate_t_f(is_loan)
                             loan_date_check = self.validate.validate_date(loan_date) # 정규 표현식 검사
                             if not (book_id_check and user_id_check and is_loan_check and loan_date_check):
