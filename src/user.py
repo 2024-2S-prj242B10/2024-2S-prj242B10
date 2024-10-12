@@ -106,6 +106,13 @@ def borrow_book(user_id):
     while True:
         book_id = input("원하는 도서의 ID(번호)를 입력해주세요(0 입력시 사용자 메뉴로 돌아갑니다.): ").strip()
 
+        # 양의 정수 판별
+        if book_id.isdigit() and int(book_id) >= 0:
+            book_id = str(int(book_id))
+        else:
+            print("올바르지 않은 입력입니다. 다시 입력해주세요.")
+            continue
+
         # 0을 입력한 경우 사용자 메뉴로 돌아감
         if book_id == '0':
             print("사용자 메뉴로 돌아갑니다.")
