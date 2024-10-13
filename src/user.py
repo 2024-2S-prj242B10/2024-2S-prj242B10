@@ -40,11 +40,6 @@ class UserManager:
                 for row in reader:
                     user_name, user_id, user_password,loan_count,loan_date,is_admin = row
                     users.append(User(user_name, user_id,user_password,loan_count,loan_date,is_admin))
-        else:
-            print(f"{self.user_file_path} 파일이 존재하지 않아 새로 생성합니다.")
-            os.makedirs(os.path.dirname(self.user_file_path), exist_ok=True)
-            with open(self.user_file_path, 'w', encoding='utf-8') as file:
-                file.write("ADMIN,admin,a1234,0,2000-01-01,False")
         return users
 
 
@@ -106,6 +101,13 @@ def borrow_book(user_id):
     while True:
         book_id = input("원하는 도서의 ID(번호)를 입력해주세요(0 입력시 사용자 메뉴로 돌아갑니다.): ").strip()
 
+        # 양의 정수 판별
+        if book_id.isdigit() and int(book_id) >= 0:
+            book_id = str(int(book_id))
+        else:
+            print("올바르지 않은 입력입니다. 다시 입력해주세요.")
+            continue
+
         # 0을 입력한 경우 사용자 메뉴로 돌아감
         if book_id == '0':
             print("사용자 메뉴로 돌아갑니다.")
@@ -148,9 +150,6 @@ def return_book(user_id):
 
     if borrow_count == 0:
         print("대출한 도서가 없어 반납을 진행할 수 없습니다. 사용자 메뉴로 돌아갑니다.")
-        return
-    elif borrow_count < 1 or borrow_count > 3:
-        print("대출 권수가 1권 이상, 3권 이하이어야 합니다. 사용자 메뉴로 돌아갑니다.")
         return
 
     # 대출 중인 도서 조회
@@ -197,7 +196,7 @@ def return_book(user_id):
             is_overdue = return_book_process(user_id, book_id)
 
             if is_overdue:
-                next_borrow_date = get_next_borrow_date(user_id)
+                next_borrow_date = calculate_next_borrow_date(get_current_date())
                 print(f"[{book_id}] - {get_book_title(book_id)} 도서를 반납했습니다.")
                 print(f"연체된 도서이므로 다음 도서 대출 가능 날짜는 {next_borrow_date}입니다.")
             else:

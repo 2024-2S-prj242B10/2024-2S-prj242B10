@@ -25,11 +25,7 @@ class BookManager:
                 for row in reader:
                     book_id, title, is_loaned = row
                     books.append(Book(book_id, title, is_loaned == 'True'))
-        else:
-            print(f"{self.book_file_path} 파일이 존재하지 않아 새로 생성합니다.")
-            os.makedirs(os.path.dirname(self.book_file_path), exist_ok=True)
-            with open(self.book_file_path, 'w', encoding='utf-8') as file:
-                pass
+
         return books
 
     def save_books(self):
@@ -55,11 +51,6 @@ class BookManager:
             for book in self.books:
                 if book.book_id in loan_status:
                     book.is_loaned = loan_status[book.book_id]
-
-    def loan_book(self, book_id, user_id, date):
-        with open(self.loglist_file_path, "a", encoding="utf-8") as file:
-            file.write(f"{book_id}, {user_id}, True, {date}\n")
-        self.update_loan_status()
 
     def register_book(self, title):
         new_book_id = self.generate_book_id()

@@ -1,7 +1,6 @@
 import os
 import sys
 from manager.validation import Validate,File_util
-from manager.ui import admin_menu
 from manager.ui import Prompt
 from src.date_manager import DateManager
 from src.user import *
