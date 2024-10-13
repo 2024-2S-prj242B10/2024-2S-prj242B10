@@ -71,7 +71,11 @@ class UserManager:
             if not (is_id and is_pw and is_name):
                 return False,"아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요."
             else:
-                return True,None
+                if self.validate.validate_user_id_duplicate(register_id):
+                    return True,None
+                else:
+                    return False,"이미 존재하는 사용자 ID 입니다. 다시 입력해주세요."
+
 
 
 

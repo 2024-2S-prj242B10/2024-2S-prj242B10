@@ -151,15 +151,18 @@ class Prompt:
             
             is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)
             
-            if is_valid:
-                if command=='y': 
+            if command=='y': 
+                if is_valid:
                     user_manager.add_user(register_name,register_id,register_pw) 
                     print(f"{register_name}님 회원가입에 성공하였습니다.초기화면으로 돌아갑니다.")
                     break
                 else:
-                    print("초기화면으로 돌아갑니다.")
-                    break
+                    print(insert)  # 오류 메시지 출력
             else:
-                print(insert)  # 오류 메시지 출력
+                print("초기화면으로 돌아갑니다.")
+                break
+            
+                
+            
                 
 
