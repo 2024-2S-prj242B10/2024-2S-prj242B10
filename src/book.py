@@ -41,16 +41,16 @@ class BookManager:
             if new_book_id not in existing_ids:
                 return new_book_id
 
-    def update_loan_status(self):
-        with open(self.loglist_file_path, "r", encoding="utf-8") as file:
-            loan_status = {}
-            for line in file:
-                book_id, user_id, is_loaned, date = line.strip().split(", ")
-                loan_status[book_id] = is_loaned == "True"
-
-            for book in self.books:
-                if book.book_id in loan_status:
-                    book.is_loaned = loan_status[book.book_id]
+    # def update_loan_status(self):
+    #     with open(self.loglist_file_path, "r", encoding="utf-8") as file:
+    #         loan_status = {}
+    #         for line in file:
+    #             book_id, user_id, is_loaned, date = line.strip().split(", ")
+    #             loan_status[book_id] = is_loaned == "True"
+    #
+    #         for book in self.books:
+    #             if book.book_id in loan_status:
+    #                 book.is_loaned = loan_status[book.book_id]
 
     def register_book(self, title):
         new_book_id = self.generate_book_id()
