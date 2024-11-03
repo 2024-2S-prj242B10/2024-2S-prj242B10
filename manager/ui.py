@@ -57,17 +57,36 @@ class Prompt:
                     break 
                 #아래는 각 프롬프트로 이동해야함
                 elif command == 1:
+                    if len(book_manager.books) >= 400:
+                        print("등록된 도서가 400권을 초과하여 더 이상 등록할 수 없습니다. 관리자 메뉴로 돌아갑니다.")
+                        continue
+
                     print("등록할 도서의 정보를 입력해주세요.")
                     register_title = input("도서 제목: ").strip()
-                    if validate.validate_book_title(register_title):
-                        if input("도서를 등록하시겠습니까? (y / 다른 키를 입력하면 등록을 취소하고 관리자 메뉴로 이동합니다.):").strip() == 'y':
-                            book_manager.register_book(register_title)
-                        else:
-                            print("도서 등록을 취소합니다. 관리자 메뉴로 돌아갑니다.")
-                            continue
-                    else:
+                    if not(validate.validate_book_title(register_title)):
                         print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
-                    # 도서 등록 >> 40권 넘어가면 오류처리 해야함
+                        continue
+
+                    register_author = input("도서 저자: ").strip()
+                    # if not(validate.validate_book_author(register_author)):
+                    #     print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
+                    #     continue
+
+                    author_code, author_name = book_manager.add_author(register_author)
+                    if not author_code:
+                        continue
+                    author_list = [(author_code, author_name)]
+
+                    register_publisher = input("도서 출판사: ").strip()
+                    # if not (validate.validate_book_publisher(register_publisher)):
+                    #     print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
+                    #     continue
+
+                    confirm = input("도서를 등록하시겠습니까? (y / 다른 키를 입력하면 취소합니다.): ").strip().lower()
+                    if confirm == 'y':
+                        book_manager.register_book(register_title, register_publisher, author_list)
+                    else:
+                        print("도서 등록을 취소합니다. 관리자 메뉴로 돌아갑니다.")
                     continue
                 elif command == 2: # 도서 삭제
                     print("삭제할 도서의 정보를 입력해주세요.")
@@ -75,13 +94,22 @@ class Prompt:
                     if validate.validate_book_id(book_id):
                         if validate.validate_book_exist(book_id):
                             if validate.validate_book_can_borrow(book_id):
+                                book = book_manager.search_book_by_id(book_id)
+                                print(f"\n삭제할 도서 정보:")
+                                print(f"도서 ID: {book.book_id}")
+                                print(f"도서 구분자: {book.book_code}")
+                                print(f"제목: {book.title}")
+                                print(f"출판사: {book.publisher}")
+                                authors_str = ', '.join([f"{author[1]} [{author[0]}]" for author in book.authors])
+                                print(f"저자: {authors_str}")
+                                print(f"대출 상태: {'대출 중' if book.is_loaned else '대출 가능'}\n")
                                 if input("도서를 삭제하시겠습니까? (y / 다른 키를 입력하면 등록을 취소하고 관리자 메뉴로 이동합니다.):").strip() == 'y':
                                     book_manager.delete_book(book_id)
                                 else:
-                                    print("도서 등록을 취소합니다. 관리자 메뉴로 돌아갑니다.")
+                                    print("도서 삭제를 취소합니다. 관리자 메뉴로 돌아갑니다.")
                                     pass
                             else:
-                                print("대출중인 도서는 삭제할 수 없습니다. 관리자 메뉴로 돌아갑니다.")
+                                print("대출 중인 도서는 삭제할 수 없습니다. 관리자 메뉴로 돌아갑니다.")
                         else:
                             print(f"존재하지 않는 도서입니다. 관리자 메뉴로 돌아갑니다.")
                     else:
