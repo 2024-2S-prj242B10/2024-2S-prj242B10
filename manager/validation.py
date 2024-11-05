@@ -3,7 +3,7 @@ import os
 import sys
 from src.book import BookManager
 from datetime import datetime
-from src.var import Var as var
+from manager.var import Var as var
 
 class Validate():
     

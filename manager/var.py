@@ -1,6 +1,4 @@
 
-
-
 class Var():
     _instance = None
 
