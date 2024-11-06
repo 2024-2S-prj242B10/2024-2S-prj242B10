@@ -172,3 +172,95 @@ class BookManager:
             if book.book_id == book_id:
                 return book
         return None
+
+
+    def update_loan_overdue_date(self):
+        arrow = [0,1,2]
+        while True:  
+            print("-------------------------------------------")
+            print("[대출 및 연체 기간 수정]")
+
+            print("0. 뒤로가기")
+            print("1. 대출 기간 수정")
+            print("2. 연체 패널티 기간 수정")
+            command = input("원하는 메뉴의 번호를 입력해 주세요: ")
+
+            if command.isdigit():
+                command = int(command)
+            else:
+                print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
+                continue
+            
+            if command in arrow:
+                if command == 0:
+                    #print("뒤로가기")
+                    break 
+                elif command == 1:
+                    self.update_loan_date()
+                    break
+                elif command == 2:
+                    self.update_overdue_date()
+                    break
+                else:
+                    print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
+
+        return None 
+    
+        
+    def update_loan_date(self):
+        print("-------------------------------------------")
+        print("[대출 기간 수정]")
+        while True:
+            
+            command = input("변경을 희망하는 대출 기간을 입력해 주세요: ")
+
+            if command.isdigit():
+                command = int(command)
+            else:
+                print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
+                continue
+
+            if command < 1 or command > 100:
+                print('변경 가능한 대출 기간은 1일 이상, 100일 이하입니다.')
+                continue
+            break
+            
+        from manager.var import Var as var
+        var.LOAN_DATE = command
+
+        with open('data/startinfo.txt', 'w', encoding='utf-8') as file:
+            file.write(str(var.LOAN_DATE)+","+str(var.OVERDUE_DATE))
+
+        print("대출 기간이 "+str(var.LOAN_DATE)+"일로 수정되었습니다.")
+        print("관리자 메뉴로 돌아갑니다.")
+        return None
+    
+    def update_overdue_date(self):
+        print("-------------------------------------------")
+        print("[연체 기간 수정]")
+        while True:
+            command = input("변경을 희망하는 연체 기간을 입력해 주세요: ")
+
+            if command.isdigit():
+                command = int(command)
+            else:
+                print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
+                continue
+
+            if command < 1 or command > 100:
+                print('변경 가능한 연체 기간은 1일 이상, 100일 이하입니다.')
+                continue
+            
+            break
+
+        from manager.var import Var as var
+        var.OVERDUE_DATE = command
+
+        with open('data/startinfo.txt', 'w', encoding='utf-8') as file:
+            file.write(str(var.LOAN_DATE)+","+str(var.OVERDUE_DATE))
+
+        print("연체 기간이 "+str(var.OVERDUE_DATE)+"일로 수정되었습니다.")
+        print("관리자 메뉴로 돌아갑니다.")
+        return None
+    
+    
