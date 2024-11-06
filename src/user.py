@@ -4,6 +4,7 @@ import os
 from src.user_utils import *
 import csv
 from src.book import *
+from manager.var import *
 
 
 class User:
@@ -132,8 +133,9 @@ def borrow_book(user_id):
             continue
 
         # 대출 진행
+        var = Var()
         book_title = get_book_title(book_id)
-        return_date = calculate_return_date(current_date, 10)  # 대출 기간 10일 후 날짜 계산
+        return_date = calculate_return_date(current_date, var.LOAN_DATE)  # 대출 기간 10일 후 날짜 계산
         print(f"{book_id} - {book_title}을 선택하셨습니다.")
         print(f"{book_title}을(를) {return_date}까지 대출합니다.")  # 대출일 + 10일
 
