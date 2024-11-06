@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from manager.var import *
+
 
 # 파일 경로 설정
 user_file = 'data/userlist.txt'
@@ -251,9 +253,10 @@ def get_return_date(book_id, user_id):
 
 
 def calculate_next_borrow_date(current_date):
+    var = Var()
     date_format = "%Y-%m-%d"
     current_date_obj = datetime.strptime(current_date, date_format)  # 현재 날짜를 datetime 객체로 변환
-    next_borrow_date_obj = current_date_obj + timedelta(days=5)  # days일 후 대출 가능
+    next_borrow_date_obj = current_date_obj + timedelta(days=var.OVERDUE_DATE)  # days일 후 대출 가능
     return next_borrow_date_obj.strftime(date_format)  # 다시 문자열 형식으로 변환하여 반환
 
 
