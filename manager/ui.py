@@ -34,7 +34,7 @@ class Prompt:
     #관리자 메뉴 프롬프트
     def manager_menu_prompt(self, book_manager):
         validate = Validate()
-        arrow = [0,1,2,3,4]
+        arrow = [0,1,2,3,4,5]
         while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
             print("[관리자 메뉴]")
@@ -43,6 +43,7 @@ class Prompt:
             print("2. 도서 삭제")
             print("3. 도서 검색")
             print("4. 도서 조회")
+            print("5. 대출 및 연체 기간 수정")
             command = input("원하는 메뉴의 번호를 입력해 주세요:")
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
@@ -123,6 +124,9 @@ class Prompt:
                 elif command == 4: # 도서 조회
                     print("[도서 목록]")
                     book_manager.display_books()
+                    continue
+                elif command == 5: # 대출 및 연체 기간 수정
+                    book_manager.update_loan_overdue_date()
                     continue
             else:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
