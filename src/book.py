@@ -28,8 +28,8 @@ class BookManager:
             with open(self.book_file_path, 'r', encoding='utf-8') as file:
                 reader = csv.reader(file)
                 for row in reader:
-                    book_id, title, publisher, authors_str, book_code, is_loaned = row
-                    authors = [tuple(author.split(":")) for author in authors_str.split(";")]
+                    book_code, book_id, title, is_loaned, publisher, author_name, author_code = row
+                    authors = [(author_code, author_name)]
                     books.append(Book(book_id, title, publisher, authors, book_code, is_loaned == 'True'))
         return books
 
@@ -37,11 +37,9 @@ class BookManager:
         with open(self.book_file_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
             for book in self.books:
-                authors_str = ";".join([f"{author_code}:{author_name}" for author_code, author_name in book.authors])
+                author_code, author_name = book.authors[0]
                 writer.writerow(
-                    [book.book_id, book.title, book.publisher, authors_str, book.book_code, str(book.is_loaned)])
-        pass
-
+                    [book.book_code, book.book_id, book.title, str(book.is_loaned), book.publisher, author_name, author_code])
 
     def build_authors(self):
         authors = {}
@@ -61,16 +59,16 @@ class BookManager:
     def generate_book_code(self):
         existing_codes = {book.book_code for book in self.books}
         while True:
-            new_code = random.randint(100, 999)
-            if new_code not in existing_codes:
-                return new_code
+            new_book_code = str(random.randint(100, 999))
+            if new_book_code not in existing_codes:
+                return new_book_code
 
     def generate_author_code(self):
         existing_codes = set(self.authors.keys())
         while True:
-            code = str(random.randint(100, 999))
-            if code not in existing_codes:
-                return code
+            new_author_code = str(random.randint(100, 999))
+            if new_author_code not in existing_codes:
+                return new_author_code
 
     def add_author(self, author_name):
         existing_author_codes = self.check_duplicate_author(author_name)
@@ -95,17 +93,6 @@ class BookManager:
     def check_duplicate_author(self, author_name):
         return [code for code, name in self.authors.items() if name == author_name]
 
-    # def update_loan_status(self):
-    #     with open(self.loglist_file_path, "r", encoding="utf-8") as file:
-    #         loan_status = {}
-    #         for line in file:
-    #             book_id, user_id, is_loaned, date = line.strip().split(", ")
-    #             loan_status[book_id] = is_loaned == "True"
-    #
-    #         for book in self.books:
-    #             if book.book_id in loan_status:
-    #                 book.is_loaned = loan_status[book.book_id]
-
     def register_book(self, title, publisher, author_list):
         book_code = self.generate_book_code()
         for book in self.books:
@@ -120,7 +107,6 @@ class BookManager:
                 break
 
         new_book_id = self.generate_book_id()
-
         new_book = Book(new_book_id, title, publisher, author_list, book_code)
         self.books.append(new_book)
         self.save_books()
