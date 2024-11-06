@@ -9,6 +9,7 @@ from src.book import BookManager
   
 def main():
     #무결성 검사
+
     file_util = File_util()
     file_util.validate_startdate_file()
     file_util.validate_booklist_file()
