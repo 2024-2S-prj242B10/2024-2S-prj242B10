@@ -68,6 +68,10 @@ class UserManager:
             is_id = self.validate.validate_user_id(register_id)
             is_pw = self.validate.validate_user_pw(register_pw)
             is_name = self.validate.validate_user_name(register_name)
+            if is_id:
+                for user in user_manager.users:
+                    if register_id == user.user_id:
+                        return False,"아이디가 중복되었습니다. 다시 입력해 주세요."
             if not (is_id and is_pw and is_name):
                 return False,"아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요."
             else:
