@@ -187,8 +187,8 @@ class BookManager:
                 elif command == 2:
                     self.update_overdue_date()
                     break
-                else:
-                    print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
+            else:
+                print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
 
         return None 
     
@@ -196,6 +196,8 @@ class BookManager:
     def update_loan_date(self):
         print("-------------------------------------------")
         print("[대출 기간 수정]")
+        from manager.var import Var as var
+        print("현재 대출 기간: "+str(var.LOAN_DATE)+"일")
         while True:
             
             command = input("변경을 희망하는 대출 기간을 입력해 주세요: ")
@@ -211,7 +213,6 @@ class BookManager:
                 continue
             break
             
-        from manager.var import Var as var
         var.LOAN_DATE = command
 
         with open('data/startinfo.txt', 'w', encoding='utf-8') as file:
@@ -224,6 +225,8 @@ class BookManager:
     def update_overdue_date(self):
         print("-------------------------------------------")
         print("[연체 기간 수정]")
+        from manager.var import Var as var
+        print("현재 연체 기간: "+str(var.OVERDUE_DATE)+"일")
         while True:
             command = input("변경을 희망하는 연체 기간을 입력해 주세요: ")
 
@@ -239,7 +242,7 @@ class BookManager:
             
             break
 
-        from manager.var import Var as var
+        
         var.OVERDUE_DATE = command
 
         with open('data/startinfo.txt', 'w', encoding='utf-8') as file:
