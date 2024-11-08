@@ -87,7 +87,7 @@ class BookManager:
         else:
             author_code = self.generate_author_code()
 
-        self.authors[author_code] = author_name
+        # self.authors[author_code] = author_name
         return author_code, author_name
 
     def check_duplicate_author(self, author_name):
@@ -110,6 +110,7 @@ class BookManager:
         new_book = Book(new_book_id, title, publisher, author_list, book_code)
         self.books.append(new_book)
         self.save_books()
+        self.authors[author_list[0][0]] = author_list[0][1]
 
         print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {author_list}")
         print("관리자 메뉴로 돌아갑니다.")
@@ -130,25 +131,25 @@ class BookManager:
             sorted_books = sorted(self.books, key=lambda book: book.book_id)
             if count is None or count > len(sorted_books):
                 count = len(sorted_books)
-            print(f"{'도서 ID':<9} {'도서 제목':<28} {'출판사':<19} {'저자':<29} {'상태':<5}")
+            print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
             print("=" * 100)
             for book in sorted_books[:count]:
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 status = '대출 중' if book.is_loaned else '대출 가능'
-                print(f"{book.book_id}({book.book_code})  {book.title:<30} {book.publisher:<20} {authors_str:<30} {status:<10}")
+                print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 100)
 
     def search_book_by_title(self, title):
         title = title.strip()
         found_books = [book for book in self.books if book.title.strip() == title]
         sorted_books = sorted(found_books, key=lambda book: book.book_id)
-        print(f"{'도서 ID':<9} {'도서 제목':<28} {'출판사':<19} {'저자':<29} {'상태':<5}")
+        print(f"{'도서 ID':<9} {'도서 제목':<50} {'출판사':<19} {'저자':<29} {'상태':<5}")
         print("=" * 100)
         if sorted_books:
             for book in sorted_books:
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 status = '대출 중' if book.is_loaned else '대출 가능'
-                print(f"{book.book_id}({book.book_code})  {book.title:<30} {book.publisher:<20} {authors_str:<30} {status:<10}")
+                print(f"{book.book_id}({book.book_code})        {book.title:<32} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 100)
         else:
             print(f"'{title}' 제목의 도서를 찾을 수 없습니다.")
