@@ -176,23 +176,36 @@ class Prompt:
             print("-------------------------------------------")
             print("사용할 계정의 정보를 입력해주세요.")
             register_id = input("아이디:")
-            register_pw = input("비밀번호:")
-            register_name = input("이름:")
-            command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):")
-            
-            
-            is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)
-            
-            if command=='y': 
-                if is_valid:
-                    user_manager.add_user(register_name,register_id,register_pw) 
-                    print(f"{register_name}님 회원가입에 성공하였습니다.초기화면으로 돌아갑니다.")
-                    break
-                else:
-                    print(insert)  # 오류 메시지 출력
+            register_id = register_id.strip()
+            is_id = user_manager.validate.validate_user_id(register_id)
+            is_id_repeat = False
+            if is_id:
+                is_id_repeat = user_manager.validate.validate_user_id_duplicate(register_id)
+                if not is_id_repeat: # 중복되면 FALSE
+                    print("아이디가 중복되었습니다. 다시 입력해 주세요.")
+                    continue
             else:
-                print("초기화면으로 돌아갑니다.")
-                break
+                print("아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요.")
+                continue
+
+            if is_id_repeat:
+                register_pw = input("비밀번호:")
+                register_name = input("이름:")
+                command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):")
+                
+                
+                is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)
+                
+                if command=='y': 
+                    if is_valid:
+                        user_manager.add_user(register_name,register_id,register_pw) 
+                        print(f"{register_name}님 회원가입에 성공하였습니다.초기화면으로 돌아갑니다.")
+                        break
+                    else:
+                        print(insert)  # 오류 메시지 출력
+                else:
+                    print("초기화면으로 돌아갑니다.")
+                    break
             
                 
             

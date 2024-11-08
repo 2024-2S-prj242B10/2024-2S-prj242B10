@@ -58,7 +58,6 @@ def main():
         else:
             print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
             continue
-        
         if command in arrow:
             if command == 0:
                 print("프로그램을 종료합니다")
