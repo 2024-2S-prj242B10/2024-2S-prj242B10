@@ -185,7 +185,7 @@ class File_util:
         if os.path.exists('data/booklist.txt'):
             with open('data/booklist.txt','r',encoding='utf-8') as file:
                 lines = file.read().rstrip().split('\n')
-                if len(lines) > 400:
+                if len(lines) > var.MAX_BOOK_CNT:
                     print('booklist.txt파일의 내용이 제한을 초과하였습니다. 프로그램을 종료합니다.')
                     time.sleep(0.1)
                     sys.exit()
