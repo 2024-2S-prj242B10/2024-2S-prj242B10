@@ -133,6 +133,8 @@ def borrow_book(user_id):
         book_title = get_book_title(book_id)
         return_date = calculate_return_date(current_date, var.LOAN_DATE)  # 대출 기간 10일 후 날짜 계산
         print(f"{book_id} - {book_title}을 선택하셨습니다.")
+        #print(f"{} - {book_id} - {book_title} - {} - {}을 선택하셨습니다.")
+
         print(f"{book_title}을(를) {return_date}까지 대출합니다.")  # 대출일 + 10일
 
         confirm = input("도서를 대출하시겠습니까? (y / 다른 키를 입력하면 대출을 취소하고 사용자 메뉴로 이동합니다.): ").strip()

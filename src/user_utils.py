@@ -118,7 +118,7 @@ def update_book_status(book_id):
     for book in books:
         info = book.split(',')
         if info[1].strip() == book_id:
-            info[3] = 'True\n'  # 대출 여부를 True로 변경
+            info[3] = 'True'  # 대출 여부를 True로 변경
         updated_books.append(','.join(info))
 
     # 도서 목록을 파일에 다시 기록
@@ -198,8 +198,8 @@ def return_book_process(user_id, book_id):
     # 도서 목록에서 도서 ID를 찾아 대출 여부를 False로 변경
     for book in books:
         book_info = book.split(',')
-        if book_info[0].strip() == book_id:
-            book_info[2] = str(False)+"\n"
+        if book_info[1].strip() == book_id:
+            book_info[3] = str(False)
         updated_books.append(','.join(book_info))
 
     # 변경된 도서 목록을 다시 파일에 기록
