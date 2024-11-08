@@ -15,7 +15,7 @@ def is_valid_book(book_id):
     # 각 도서 정보를 확인하여 book_id가 존재하는지 검사
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id:  # 도서 ID가 입력한 ID와 일치하는지 확인
+        if info[1].strip() == book_id:  # 도서 ID가 입력한 ID와 일치하는지 확인
             return True  # 도서 ID가 존재함
     return False  # 도서 ID가 존재하지 않음
 
@@ -69,8 +69,8 @@ def get_book_title(book_id):
 
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id:
-            return info[1].strip()
+        if info[1].strip() == book_id:
+            return info[2].strip()
     return ""
 
 
@@ -117,8 +117,8 @@ def update_book_status(book_id):
     # 도서 목록에서 도서 ID를 찾아서 대출 여부를 True로 변경
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id:
-            info[2] = 'True\n'  # 대출 여부를 True로 변경
+        if info[1].strip() == book_id:
+            info[3] = 'True\n'  # 대출 여부를 True로 변경
         updated_books.append(','.join(info))
 
     # 도서 목록을 파일에 다시 기록
@@ -152,7 +152,7 @@ def is_book_borrowed(book_id):
     # 도서 목록에서 도서 ID가 존재하고 대출 여부가 True인지 확인
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id and info[2].strip() == "True":  # 도서 ID와 대출 여부 확인
+        if info[1].strip() == book_id and info[3].strip() == "True":  # 도서 ID와 대출 여부 확인
             return True  # 도서가 대출 중임
     return False  # 도서가 대출 중이 아님
 
