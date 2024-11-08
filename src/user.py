@@ -130,10 +130,19 @@ def borrow_book(user_id):
 
         # 대출 진행
         var = Var()
-        book_title = get_book_title(book_id)
+        
         return_date = calculate_return_date(current_date, var.LOAN_DATE)  # 대출 기간 10일 후 날짜 계산
-        print(f"{book_id} - {book_title}을 선택하셨습니다.")
-        #print(f"{} - {book_id} - {book_title} - {} - {}을 선택하셨습니다.")
+        #print(f"{book_id} - {book_title}을 선택하셨습니다.")
+        book_info = get_book_info(book_id)
+        book_code = book_info[0]
+        book_title = book_info[2]
+        book_publisher = book_info[4]
+        book_author = book_info[5]
+
+
+        print(f"[{book_id}({book_code}) - {book_title} - {book_publisher} - {book_author}] 도서를 선택하셨습니다.")
+
+
 
         print(f"{book_title}을(를) {return_date}까지 대출합니다.")  # 대출일 + 10일
 
@@ -169,9 +178,10 @@ def return_book(user_id):
     if not borrowed_books:
         print("대출한 도서가 없습니다. 사용자 메뉴로 돌아갑니다.")
         return
-
+    
+    print()
     while True:
-        book_id = input("\n반납을 원하는 도서의 도서 ID를 입력해주세요(0 입력시 사용자 메뉴로 돌아갑니다.): ").strip()
+        book_id = input("반납을 원하는 도서의 도서 ID를 입력해주세요(0 입력시 사용자 메뉴로 돌아갑니다.): ").strip()
 
         # 양의 정수 판별
         if book_id.isdigit() and int(book_id) >= 0:
@@ -203,12 +213,18 @@ def return_book(user_id):
             # 도서 반납 처리
             is_overdue = return_book_process(user_id, book_id)
 
+            book_info = get_book_info(book_id)
+            book_code = book_info[0]
+            book_title = book_info[2]
+            book_publisher = book_info[4]
+            book_author = book_info[5]
+
             if is_overdue:
                 next_borrow_date = calculate_next_borrow_date(get_current_date())
-                print(f"[{book_id}] - {get_book_title(book_id)} 도서를 반납했습니다.")
+                print(f"[{book_id}({book_code}) - {book_title} - {book_publisher} - {book_author}] 도서를 반납했습니다.")
                 print(f"연체된 도서이므로 다음 도서 대출 가능 날짜는 {next_borrow_date}입니다.")
             else:
-                print(f"[{book_id}] - {get_book_title(book_id)} 도서를 반납했습니다.")
+                print(f"[{book_id}({book_code}) - {book_title} - {book_publisher} - {book_author}] 도서를 반납했습니다.")
             return
         else:
             print("도서 반납이 취소되었습니다.")
