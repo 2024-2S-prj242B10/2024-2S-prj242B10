@@ -82,7 +82,7 @@ class BookManager:
             elif chosen_code in existing_author_codes:
                 author_code = chosen_code
             else:
-                print("올바르지 않은 입력입니다.")
+                print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
                 return None, None
         else:
             author_code = self.generate_author_code()
