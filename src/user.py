@@ -8,7 +8,7 @@ from manager.var import *
 
 
 class User:
-    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=False):
+    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=True):
         self.user_name = user_name
         self.user_id = user_id
         self.user_password = user_password
@@ -62,7 +62,7 @@ class UserManager:
         if len(user_manager.users) >=11:
             return False,"현재는 회원가입이 불가능합니다. 초기화면으로 이동합니다."
         else:
-            #선 후 공백 제거
+            #선 공백 제거
             register_pw = register_pw.strip()
             register_name = register_name.strip()
             is_id = self.validate.validate_user_id(register_id)
