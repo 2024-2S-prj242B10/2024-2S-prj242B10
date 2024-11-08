@@ -58,6 +58,7 @@ class Prompt:
                     break 
                 #아래는 각 프롬프트로 이동해야함
                 elif command == 1:
+                    print("-------------------------------------------")
                     if len(book_manager.books) >= var.MAX_BOOK_CNT:
                         print("등록된 도서가 400권을 초과하여 더 이상 등록할 수 없습니다. 관리자 메뉴로 돌아갑니다.")
                         continue
@@ -90,6 +91,7 @@ class Prompt:
                         print("도서 등록을 취소합니다. 관리자 메뉴로 돌아갑니다.")
                     continue
                 elif command == 2: # 도서 삭제
+                    print("-------------------------------------------")
                     print("삭제할 도서의 정보를 입력해주세요.")
                     book_id = input("도서 ID: ").strip()
                     if validate.validate_book_id(book_id):
@@ -117,11 +119,13 @@ class Prompt:
                         print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
                     continue
                 elif command == 3: # 도서 검색
+                    print("-------------------------------------------")
                     print("[도서 검색]")
                     search_title = input("\n검색할 도서 제목을 입력해주세요: ").strip()
                     book_manager.search_book_by_title(search_title)
                     continue
                 elif command == 4: # 도서 조회
+                    print("-------------------------------------------")
                     print("[도서 목록]")
                     book_manager.display_books()
                     continue
