@@ -115,7 +115,7 @@ class File_util:
     def validate_startinfo_file(self):
         if os.path.exists('data/startinfo.txt'):
             with open('data/startinfo.txt', 'r', encoding='utf-8') as file:
-                lines = file.read().split('\n')
+                lines = file.read().rstrip().split('\n')
                 if not lines or (len(lines) == 1 and lines[0] == ''):
                     print("startinfo.txt 파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
                     time.sleep(0.1)
@@ -153,7 +153,7 @@ class File_util:
     def validate_startdate_file(self):
         if os.path.exists('data/startdate.txt'):
             with open('data/startdate.txt', 'r', encoding='utf-8') as file:
-                lines = file.read().split('\n')
+                lines = file.read().rstrip().split('\n')
 
                 if not lines or (len(lines) == 1 and lines[0] == ''):
                     print("startdate.txt 파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.")
@@ -183,7 +183,7 @@ class File_util:
     def validate_booklist_file(self):
         if os.path.exists('data/booklist.txt'):
             with open('data/booklist.txt','r',encoding='utf-8') as file:
-                lines = file.read().split('\n')
+                lines = file.read().rstrip().split('\n')
                 if len(lines) > 400:
                     print('booklist.txt파일의 내용이 제한을 초과하였습니다. 프로그램을 종료합니다.')
                     time.sleep(0.1)
@@ -255,7 +255,7 @@ class File_util:
     def validate_userlist_file(self):
         if os.path.exists('data/userlist.txt'):
             with open('data/userlist.txt','r',encoding='utf-8') as file:
-                lines = file.read().split('\n')
+                lines = file.read().rstrip().split('\n')
                 if len(lines) > 11:
                     print('userlist.txt파일의 내용이 제한을 초과하였습니다. 프로그램을 종료합니다.')
                     time.sleep(0.1)
@@ -325,7 +325,7 @@ class File_util:
     def validate_loglist_file(self):
         if os.path.exists('data/loglist.txt'):
             with open('data/loglist.txt','r',encoding='utf-8') as file:
-                lines = file.read().split('\n')
+                lines = file.read().rstrip().split('\n')
                 if len(lines)==1:
                     if lines[0]== '': #빈 파일일 경우
                         self.loan_count = 0
