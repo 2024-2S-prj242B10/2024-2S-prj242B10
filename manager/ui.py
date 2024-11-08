@@ -10,9 +10,9 @@ class Prompt:
         while True:  # 잘못된 입력이면 로그인 프롬프트 반복
             print("-------------------------------------------")
             print("[로그인]")
-            logined_id = input("아이디:")
-            logined_pw = input("비밀번호:")
-            command = input("로그인 하시겠습니까? (y/다른 키를 입력하면 초기화면으로 이동합니다.):")
+            logined_id = input("아이디:").strip()
+            logined_pw = input("비밀번호:").strip()
+            command = input("로그인 하시겠습니까? (y/다른 키를 입력하면 초기화면으로 이동합니다.):").strip()
             
             
             if command == 'y':
@@ -44,7 +44,7 @@ class Prompt:
             print("3. 도서 검색")
             print("4. 도서 조회")
             print("5. 대출 및 연체 기간 수정")
-            command = input("원하는 메뉴의 번호를 입력해 주세요:")
+            command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
                 command = int(command)
@@ -147,7 +147,7 @@ class Prompt:
             print("2. 도서 반납")
             print("3. 도서 검색")
             print("4. 도서 조회")
-            command = input("원하는 메뉴의 번호를 입력해 주세요:")
+            command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
                 command = int(command)
@@ -179,7 +179,7 @@ class Prompt:
           while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
             print("사용할 계정의 정보를 입력해주세요.")
-            register_id = input("아이디:")
+            register_id = input("아이디:").strip()
             register_id = register_id.strip()
             is_id = user_manager.validate.validate_user_id(register_id)
             is_id_repeat = False
@@ -193,9 +193,9 @@ class Prompt:
                 continue
 
             if is_id_repeat:
-                register_pw = input("비밀번호:")
-                register_name = input("이름:")
-                command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):")
+                register_pw = input("비밀번호:").strip()
+                register_name = input("이름:").strip()
+                command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):").strip()
                 
                 
                 is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)

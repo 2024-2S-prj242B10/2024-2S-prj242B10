@@ -99,8 +99,7 @@ class BookManager:
             if book.title == title and book.publisher == publisher and book.authors == author_list:
                 book_code = book.book_code
                 print("기존에 동일한 도서가 존재합니다.")
-                confirm_duplicate = input(
-                    "동일한 도서에 대해 추가 등록하시겠습니까? (y / 다른 키를 입력하면 취소합니다.): ").strip()
+                confirm_duplicate = input("동일한 도서에 대해 추가 등록하시겠습니까? (y / 다른 키를 입력하면 취소합니다.): ").strip()
                 if confirm_duplicate != 'y':
                     print("중복된 도서가 이미 존재합니다. 관리자 메뉴로 돌아갑니다.")
                     return
@@ -172,7 +171,7 @@ class BookManager:
             print("0. 뒤로가기")
             print("1. 대출 기간 수정")
             print("2. 연체 패널티 기간 수정")
-            command = input("원하는 메뉴의 번호를 입력해 주세요: ")
+            command = input("원하는 메뉴의 번호를 입력해 주세요: ").strip()
 
             if command.isdigit():
                 command = int(command)
@@ -203,7 +202,7 @@ class BookManager:
         print("현재 대출 기간: "+str(var.LOAN_DATE)+"일")
         while True:
             
-            command = input("변경을 희망하는 대출 기간을 입력해 주세요: ")
+            command = input("변경을 희망하는 대출 기간을 입력해 주세요: ").strip()
 
             if command.isdigit():
                 command = int(command)
@@ -231,7 +230,7 @@ class BookManager:
         from manager.var import Var as var
         print("현재 연체 기간: "+str(var.OVERDUE_DATE)+"일")
         while True:
-            command = input("변경을 희망하는 연체 기간을 입력해 주세요: ")
+            command = input("변경을 희망하는 연체 기간을 입력해 주세요: ").strip()
 
             if command.isdigit():
                 command = int(command)
