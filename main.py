@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from manager.validation import Validate,File_util
 from manager.ui import Prompt
 from src.date_manager import DateManager
@@ -31,7 +32,7 @@ def main():
             
             if is_valid:
                 if insert=='0': # 0을 입력해 종료하려는 경우
-                    os.system('pause')
+                    time.sleep(0.1)
                     sys.exit()
                 else:
                     break
@@ -58,7 +59,6 @@ def main():
         else:
             print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
             continue
-        
         if command in arrow:
             if command == 0:
                 print("프로그램을 종료합니다")

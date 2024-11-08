@@ -8,7 +8,7 @@ from manager.var import *
 
 
 class User:
-    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=False):
+    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=True):
         self.user_name = user_name
         self.user_id = user_id
         self.user_password = user_password
@@ -26,7 +26,7 @@ class UserManager:
         self.users = self.load_users()
     
     def add_user(self,register_name,register_id,register_pw):
-        new_user = User(register_name,register_id,register_pw,0,'2000-01-01',False)
+        new_user = User(register_name,register_id,register_pw,0,'2000-01-01',True)
         self.users.append(new_user)
         with open(self.user_file_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
@@ -62,17 +62,13 @@ class UserManager:
         if len(user_manager.users) >=11:
             return False,"현재는 회원가입이 불가능합니다. 초기화면으로 이동합니다."
         else:
-            #선 후 공백 제거
-            register_id = register_id.strip()
+            #선 공백 제거
             register_pw = register_pw.strip()
             register_name = register_name.strip()
             is_id = self.validate.validate_user_id(register_id)
             is_pw = self.validate.validate_user_pw(register_pw)
             is_name = self.validate.validate_user_name(register_name)
-            if is_id:
-                for user in user_manager.users:
-                    if register_id == user.user_id:
-                        return False,"아이디가 중복되었습니다. 다시 입력해 주세요."
+            
             if not (is_id and is_pw and is_name):
                 return False,"아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요."
             else:
