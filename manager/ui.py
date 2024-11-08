@@ -1,4 +1,5 @@
 from manager.validation import *
+from manager.var import *
 from src.user import *
 from src.book import *
 
@@ -6,7 +7,6 @@ class Prompt:
 
     # 로그인 프롬프트
     def login_prompt(self,user_manager)-> tuple[bool,bool,int]:
-        
         while True:  # 잘못된 입력이면 로그인 프롬프트 반복
             print("-------------------------------------------")
             print("[로그인]")
@@ -176,7 +176,12 @@ class Prompt:
 
     #회원 가입
     def register(self,user_manager):
-          while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
+        var = Var()
+        if len(user_manager.users) >= (var.MAX_USER_CNT + 1):
+            print("현재는 회원가입이 불가능합니다. 초기화면으로 이동합니다.")
+            return
+        
+        while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
             print("사용할 계정의 정보를 입력해주세요.")
             register_id = input("아이디:").strip()

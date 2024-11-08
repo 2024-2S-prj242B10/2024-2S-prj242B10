@@ -58,24 +58,21 @@ class UserManager:
 
 
 
-    def user_regist(self,user_manager,register_id,register_pw,register_name)->tuple[bool,any]:
-        if len(user_manager.users) >=11:
-            return False,"현재는 회원가입이 불가능합니다. 초기화면으로 이동합니다."
+    def user_regist(self,user_manager,register_id,register_pw,register_name)->tuple[bool,any]:        
+        #선 공백 제거
+        register_pw = register_pw.strip()
+        register_name = register_name.strip()
+        is_id = self.validate.validate_user_id(register_id)
+        is_pw = self.validate.validate_user_pw(register_pw)
+        is_name = self.validate.validate_user_name(register_name)
+        
+        if not (is_id and is_pw and is_name):
+            return False,"아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요."
         else:
-            #선 공백 제거
-            register_pw = register_pw.strip()
-            register_name = register_name.strip()
-            is_id = self.validate.validate_user_id(register_id)
-            is_pw = self.validate.validate_user_pw(register_pw)
-            is_name = self.validate.validate_user_name(register_name)
-            
-            if not (is_id and is_pw and is_name):
-                return False,"아이디,비밀번호 또는 이름이 입력 형식에 맞지 않습니다. 다시 입력해 주세요."
+            if self.validate.validate_user_id_duplicate(register_id):
+                return True,None
             else:
-                if self.validate.validate_user_id_duplicate(register_id):
-                    return True,None
-                else:
-                    return False,"이미 존재하는 사용자 ID 입니다. 다시 입력해주세요."
+                return False,"이미 존재하는 사용자 ID 입니다. 다시 입력해주세요."
 
 
 
