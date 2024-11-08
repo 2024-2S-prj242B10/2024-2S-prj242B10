@@ -63,15 +63,26 @@ def has_overdue_books(user_id, current_date):
     return False
 
 
-def get_book_title(book_id):
+# def get_book_title(book_id):
+#     with open(book_file, 'r', encoding='utf-8') as f:
+#         books = f.readlines()
+
+#     for book in books:
+#         info = book.split(',')
+#         if info[1].strip() == book_id:
+#             return info[2].strip()
+#     return ""
+
+def get_book_info(book_id):
     with open(book_file, 'r', encoding='utf-8') as f:
         books = f.readlines()
 
     for book in books:
         info = book.split(',')
         if info[1].strip() == book_id:
-            return info[2].strip()
+            return info
     return ""
+
 
 
 def calculate_return_date(current_date, days):
@@ -166,9 +177,15 @@ def view_borrowed_books(user_id):
     for log in logs:
         log_info = log.split(',')
         if log_info[1].strip() == user_id and log_info[2].strip() == 'True':
-            book_title = get_book_title(log_info[0].strip())
-            print(f"{log_info[0].strip()} - {book_title} / 대출기한: {log_info[3].strip()}")
-            borrowed_books.append(log_info[0].strip())
+            book_id = log_info[0].strip()
+            book_info = get_book_info(book_id)
+            book_code = book_info[0]
+            book_title = book_info[2]
+            book_publisher = book_info[4]
+            book_author = book_info[5]
+
+            print(f"[{book_id}({book_code}) - {book_title} - {book_publisher} - {book_author}] / 대출기한: {log_info[3].strip()}")
+            borrowed_books.append(book_id)
 
     return borrowed_books
 

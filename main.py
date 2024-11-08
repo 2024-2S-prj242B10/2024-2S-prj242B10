@@ -26,7 +26,7 @@ def main():
             print("-------------------------------------------")
             print("프로그램을 종료하려면 숫자 0을 입력해주세요.")
            
-            command = input("프로그램에서 사용할 날짜를 입력해주세요 (yyyy-mm-dd):")
+            command = input("프로그램에서 사용할 날짜를 입력해주세요 (yyyy-mm-dd):").strip()
             
             is_valid, insert = date_manager.parse_insert(command)
             
@@ -52,7 +52,7 @@ def main():
         print("1. 로그인")
         print("2. 회원가입")
 
-        command = input("원하는 메뉴의 번호를 입력해 주세요:")
+        command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
 
         if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
             command = int(command)
