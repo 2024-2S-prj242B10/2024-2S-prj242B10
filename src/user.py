@@ -26,7 +26,7 @@ class UserManager:
         self.users = self.load_users()
     
     def add_user(self,register_name,register_id,register_pw):
-        new_user = User(register_name,register_id,register_pw,0,'2000-01-01',False)
+        new_user = User(register_name,register_id,register_pw,0,'2000-01-01',True)
         self.users.append(new_user)
         with open(self.user_file_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
