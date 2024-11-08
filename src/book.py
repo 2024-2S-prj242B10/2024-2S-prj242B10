@@ -135,6 +135,7 @@ class BookManager:
             print("=" * 100)
             for book in sorted_books[:count]:
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+                book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 status = '대출 중' if book.is_loaned else '대출 가능'
                 print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 100)
@@ -148,6 +149,7 @@ class BookManager:
         if sorted_books:
             for book in sorted_books:
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+                book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 status = '대출 중' if book.is_loaned else '대출 가능'
                 print(f"{book.book_id}({book.book_code})        {book.title:<32} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 100)
