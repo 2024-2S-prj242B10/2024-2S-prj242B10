@@ -77,7 +77,7 @@ def get_book_title(book_id):
 def calculate_return_date(current_date, days):
     date_format = "%Y-%m-%d"
     current = datetime.strptime(current_date, date_format)
-    return_date = current + timedelta(days=days)
+    return_date = current + timedelta(days=int(days))
     return return_date.strftime(date_format)
 
 
@@ -118,7 +118,7 @@ def update_book_status(book_id):
     for book in books:
         info = book.split(',')
         if info[1].strip() == book_id:
-            info[3] = 'True\n'  # 대출 여부를 True로 변경
+            info[3] = 'True'  # 대출 여부를 True로 변경
         updated_books.append(','.join(info))
 
     # 도서 목록을 파일에 다시 기록
@@ -198,8 +198,8 @@ def return_book_process(user_id, book_id):
     # 도서 목록에서 도서 ID를 찾아 대출 여부를 False로 변경
     for book in books:
         book_info = book.split(',')
-        if book_info[0].strip() == book_id:
-            book_info[2] = str(False)+"\n"
+        if book_info[1].strip() == book_id:
+            book_info[3] = str(False)
         updated_books.append(','.join(book_info))
 
     # 변경된 도서 목록을 다시 파일에 기록
@@ -256,7 +256,7 @@ def calculate_next_borrow_date(current_date):
     var = Var()
     date_format = "%Y-%m-%d"
     current_date_obj = datetime.strptime(current_date, date_format)  # 현재 날짜를 datetime 객체로 변환
-    next_borrow_date_obj = current_date_obj + timedelta(days=var.OVERDUE_DATE)  # days일 후 대출 가능
+    next_borrow_date_obj = current_date_obj + timedelta(days=int(var.OVERDUE_DATE))  # days일 후 대출 가능
     return next_borrow_date_obj.strftime(date_format)  # 다시 문자열 형식으로 변환하여 반환
 
 
