@@ -2,6 +2,7 @@ import re
 import os
 import sys
 import time
+
 from src.book import BookManager
 from datetime import datetime
 from manager.var import Var as var
@@ -256,7 +257,7 @@ class File_util:
                 print('data 디렉토리에 booklist.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 time.sleep(0.1)
                 sys.exit()
-    
+
     #userlist.txt 무결성
     def validate_userlist_file(self):
         if os.path.exists('data/userlist.txt'):
@@ -325,7 +326,7 @@ class File_util:
                 time.sleep(0.1)
                 sys.exit()
     
-     #userlist.txt 무결성
+    #userlist.txt 무결성
     
     #loglist.txt 무결성
     def validate_loglist_file(self):
