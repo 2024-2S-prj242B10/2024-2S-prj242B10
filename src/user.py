@@ -8,16 +8,16 @@ from manager.var import *
 
 
 class User:
-    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_admin=True):
+    def __init__(self,user_name, user_id, user_password, loan_count=0, loan_date=None, is_user=True):
         self.user_name = user_name
         self.user_id = user_id
         self.user_password = user_password
         self.loan_count = loan_count
         self.loan_date = loan_date
-        self.is_admin = is_admin
+        self.is_user = is_user
 
     def __str__(self):
-        return f"{self.user_name}, {self.user_id}, {self.user_password}, {self.loan_count}, {self.loan_date}, {self.is_admin}"
+        return f"{self.user_name}, {self.user_id}, {self.user_password}, {self.loan_count}, {self.loan_date}, {self.is_user}"
 
 class UserManager:
     def __init__(self, user_file_path="data/userlist.txt"):
@@ -31,7 +31,7 @@ class UserManager:
         with open(self.user_file_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
             for user in self.users:
-                writer.writerow([user.user_name,user.user_id,user.user_password,user.loan_count,user.loan_date, str(user.is_admin)])
+                writer.writerow([user.user_name,user.user_id,user.user_password,user.loan_count,user.loan_date, str(user.is_user)])
 
     def load_users(self):
         users = []
@@ -39,8 +39,8 @@ class UserManager:
             with open(self.user_file_path, 'r', encoding='utf-8') as file:
                 reader = csv.reader(file)
                 for row in reader:
-                    user_name, user_id, user_password,loan_count,loan_date,is_admin = row
-                    users.append(User(user_name, user_id,user_password,loan_count,loan_date,is_admin))
+                    user_name, user_id, user_password,loan_count,loan_date,is_user = row
+                    users.append(User(user_name, user_id,user_password,loan_count,loan_date,is_user))
         return users
 
 
