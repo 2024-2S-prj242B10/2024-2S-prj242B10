@@ -200,7 +200,7 @@ class Prompt:
             if is_id_repeat:
                 register_pw = input("비밀번호:").strip()
                 register_name = input("이름:").strip()
-                command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 메인 메뉴로 이동합니다.):").strip()
+                command = input("회원가입 하시겠습니까? (y/다른 키를 입력하면 초기화면으로 이동합니다.):").strip()
                 
                 
                 is_valid, insert = user_manager.user_regist(user_manager,register_id,register_pw,register_name)
