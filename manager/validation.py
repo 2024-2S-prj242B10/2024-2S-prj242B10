@@ -200,15 +200,18 @@ class File_util:
                             sys.exit()
                         else:
                             book_delim,book_id,book_title,book_loan_check = parts[0],parts[1],parts[2],parts[3]
-                            book_publisher,book_writer,name_delim = parts[4],parts[5],parts[6]
+                            book_publisher = parts[4]
+
+                            book_writer = [parts[5]]
+                            name_delim = [parts[6]]
 
                             book_delim_check = self.validate.validate_book_delimiter(book_delim)
                             id_check = self.validate.validate_book_id(book_id)
                             title_check = self.validate.validate_book_title(book_title)
                             loan_check = self.validate.validate_t_f(book_loan_check)
                             book_publisher_check = self.validate.validate_book_publisher(book_publisher)
-                            book_writer_check = self.validate.validate_book_writer(book_writer)
-                            name_delim_check = self.validate.validate_name_delimiter(name_delim)
+                            book_writer_check = self.validate.validate_book_writer(book_writer[0])
+                            name_delim_check = self.validate.validate_name_delimiter(name_delim[0])
 
                             if not (book_delim_check and id_check and title_check and loan_check and book_publisher_check and book_writer_check and name_delim_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
@@ -225,15 +228,18 @@ class File_util:
                             sys.exit()
                         else:
                             book_delim,book_id,book_title,book_loan_check = parts[0],parts[1],parts[2],parts[3]
-                            book_publisher,book_writer,name_delim = parts[4],parts[5],parts[6]
+                            book_publisher= parts[4]
+
+                            book_writer = [parts[5]]
+                            name_delim = [parts[6]]
 
                             book_delim_check = self.validate.validate_book_delimiter(book_delim)
                             id_check = self.validate.validate_book_id(book_id)
                             title_check = self.validate.validate_book_title(book_title)
                             loan_check = self.validate.validate_t_f(book_loan_check)
                             book_publisher_check = self.validate.validate_book_publisher(book_publisher)
-                            book_writer_check = self.validate.validate_book_writer(book_writer)
-                            name_delim_check = self.validate.validate_name_delimiter(name_delim)
+                            book_writer_check = self.validate.validate_book_writer(book_writer[0])
+                            name_delim_check = self.validate.validate_name_delimiter(name_delim[0])
 
                             if not (book_delim_check and id_check and title_check and loan_check and book_publisher_check and book_writer_check and name_delim_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')

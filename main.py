@@ -73,7 +73,10 @@ def main():
                 else:
                     continue
             elif command == 2:
-                prompt.register(user_manager) # 회원 가입
+                if file_util.user_count>=11:
+                    print("현재는 회원가입이 불가능합니다. 초기화면으로 이동합니다.")
+                else:
+                    prompt.register(user_manager) # 회원 가입
 
         #mod에 오류 메시지를 반환하도록 설계
         else:   
