@@ -142,14 +142,14 @@ class BookManager:
         title = title.strip()
         found_books = [book for book in self.books if book.title.strip() == title]
         sorted_books = sorted(found_books, key=lambda book: book.book_id)
-        print(f"{'도서 ID':<9} {'도서 제목':<50} {'출판사':<19} {'저자':<29} {'상태':<5}")
+        print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
         print("=" * 130)
         if sorted_books:
             for book in sorted_books:
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 status = '대출 중' if book.is_loaned else '대출 가능'
-                print(f"{book.book_id}({book.book_code})        {book.title:<32} {book.publisher:<20} {authors_str:<30} {status:<10}")
+                print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 130)
         else:
             print(f"'{title}' 제목의 도서를 찾을 수 없습니다.")
