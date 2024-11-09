@@ -6,7 +6,7 @@ from src.book import *
 class Prompt:
 
     # 로그인 프롬프트
-    def login_prompt(self,user_manager)-> tuple[bool,bool,int]:
+    def login_prompt(self,user_manager)-> tuple[bool,bool,any]:
         while True:  # 잘못된 입력이면 로그인 프롬프트 반복
             print("-------------------------------------------")
             print("[로그인]")
