@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from manager.validation import Validate,File_util
 from manager.ui import Prompt
 from src.date_manager import DateManager
@@ -9,11 +10,13 @@ from src.book import BookManager
   
 def main():
     #무결성 검사
+
     file_util = File_util()
     file_util.validate_startdate_file()
     file_util.validate_booklist_file()
     file_util.validate_userlist_file()
     file_util.validate_loglist_file()
+    file_util.validate_startinfo_file()
 
     date_manager = DateManager()
     date_manager.read_file()
@@ -23,13 +26,13 @@ def main():
             print("-------------------------------------------")
             print("프로그램을 종료하려면 숫자 0을 입력해주세요.")
            
-            command = input("프로그램에서 사용할 날짜를 입력해주세요 (yyyy-mm-dd):")
+            command = input("프로그램에서 사용할 날짜를 입력해주세요 (yyyy-mm-dd):").strip()
             
             is_valid, insert = date_manager.parse_insert(command)
             
             if is_valid:
                 if insert=='0': # 0을 입력해 종료하려는 경우
-                    os.system('pause')
+                    time.sleep(0.1)
                     sys.exit()
                 else:
                     break
@@ -49,14 +52,13 @@ def main():
         print("1. 로그인")
         print("2. 회원가입")
 
-        command = input("원하는 메뉴의 번호를 입력해 주세요:")
+        command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
 
         if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
             command = int(command)
         else:
             print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
             continue
-        
         if command in arrow:
             if command == 0:
                 print("프로그램을 종료합니다")

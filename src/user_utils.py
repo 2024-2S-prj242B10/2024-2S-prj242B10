@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from manager.var import *
+
 
 # 파일 경로 설정
 user_file = 'data/userlist.txt'
@@ -13,7 +15,7 @@ def is_valid_book(book_id):
     # 각 도서 정보를 확인하여 book_id가 존재하는지 검사
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id:  # 도서 ID가 입력한 ID와 일치하는지 확인
+        if info[1].strip() == book_id:  # 도서 ID가 입력한 ID와 일치하는지 확인
             return True  # 도서 ID가 존재함
     return False  # 도서 ID가 존재하지 않음
 
@@ -61,21 +63,32 @@ def has_overdue_books(user_id, current_date):
     return False
 
 
-def get_book_title(book_id):
+# def get_book_title(book_id):
+#     with open(book_file, 'r', encoding='utf-8') as f:
+#         books = f.readlines()
+
+#     for book in books:
+#         info = book.split(',')
+#         if info[1].strip() == book_id:
+#             return info[2].strip()
+#     return ""
+
+def get_book_info(book_id):
     with open(book_file, 'r', encoding='utf-8') as f:
         books = f.readlines()
 
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id:
-            return info[1].strip()
+        if info[1].strip() == book_id:
+            return info
     return ""
+
 
 
 def calculate_return_date(current_date, days):
     date_format = "%Y-%m-%d"
     current = datetime.strptime(current_date, date_format)
-    return_date = current + timedelta(days=days)
+    return_date = current + timedelta(days=int(days))
     return return_date.strftime(date_format)
 
 
@@ -115,8 +128,8 @@ def update_book_status(book_id):
     # 도서 목록에서 도서 ID를 찾아서 대출 여부를 True로 변경
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id:
-            info[2] = 'True\n'  # 대출 여부를 True로 변경
+        if info[1].strip() == book_id:
+            info[3] = 'True'  # 대출 여부를 True로 변경
         updated_books.append(','.join(info))
 
     # 도서 목록을 파일에 다시 기록
@@ -150,7 +163,7 @@ def is_book_borrowed(book_id):
     # 도서 목록에서 도서 ID가 존재하고 대출 여부가 True인지 확인
     for book in books:
         info = book.split(',')
-        if info[0].strip() == book_id and info[2].strip() == "True":  # 도서 ID와 대출 여부 확인
+        if info[1].strip() == book_id and info[3].strip() == "True":  # 도서 ID와 대출 여부 확인
             return True  # 도서가 대출 중임
     return False  # 도서가 대출 중이 아님
 
@@ -164,9 +177,15 @@ def view_borrowed_books(user_id):
     for log in logs:
         log_info = log.split(',')
         if log_info[1].strip() == user_id and log_info[2].strip() == 'True':
-            book_title = get_book_title(log_info[0].strip())
-            print(f"{log_info[0].strip()} - {book_title} / 대출기한: {log_info[3].strip()}")
-            borrowed_books.append(log_info[0].strip())
+            book_id = log_info[0].strip()
+            book_info = get_book_info(book_id)
+            book_code = book_info[0]
+            book_title = book_info[2]
+            book_publisher = book_info[4]
+            book_author = book_info[5]
+
+            print(f"[{book_id}({book_code}) - {book_title} - {book_publisher} - {book_author}] / 대출기한: {log_info[3].strip()}")
+            borrowed_books.append(book_id)
 
     return borrowed_books
 
@@ -196,8 +215,8 @@ def return_book_process(user_id, book_id):
     # 도서 목록에서 도서 ID를 찾아 대출 여부를 False로 변경
     for book in books:
         book_info = book.split(',')
-        if book_info[0].strip() == book_id:
-            book_info[2] = str(False)+"\n"
+        if book_info[1].strip() == book_id:
+            book_info[3] = str(False)
         updated_books.append(','.join(book_info))
 
     # 변경된 도서 목록을 다시 파일에 기록
@@ -251,9 +270,10 @@ def get_return_date(book_id, user_id):
 
 
 def calculate_next_borrow_date(current_date):
+    var = Var()
     date_format = "%Y-%m-%d"
     current_date_obj = datetime.strptime(current_date, date_format)  # 현재 날짜를 datetime 객체로 변환
-    next_borrow_date_obj = current_date_obj + timedelta(days=5)  # days일 후 대출 가능
+    next_borrow_date_obj = current_date_obj + timedelta(days=int(var.OVERDUE_DATE))  # days일 후 대출 가능
     return next_borrow_date_obj.strftime(date_format)  # 다시 문자열 형식으로 변환하여 반환
 
 
