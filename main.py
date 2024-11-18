@@ -37,7 +37,7 @@ def main():
                 else:
                     break
     
-    #loan_manager = LoanManaer()
+    
     user_manager = UserManager()
     book_manager = BookManager()
 

@@ -195,24 +195,58 @@ class File_util:
                         return
                     else:
                         parts = lines[0].split(',')
-                        if not len(parts)==7:
+                        if not len(parts)%2==1:
                             print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
                             book_delim,book_id,book_title,book_loan_check = parts[0],parts[1],parts[2],parts[3]
                             book_publisher = parts[4]
+                            book_writer = []
+                            name_delim = []
+                            for i in range(5,len(parts)):
+                                if i%2 == 1:
+                                    if not parts[i]=="":
+                                        book_writer.append(parts[i])
+                                    else:
+                                        book_writer.append("")
+                                else:
+                                    if not parts[i]=="":
+                                        name_delim.append(parts[i])
+                                    else:
+                                        name_delim.append("")
+                        
+                            if not len(name_delim) == len(book_writer):
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                time.sleep(0.1)
+                                sys.exit()
 
-                            book_writer = [parts[5]]
-                            name_delim = [parts[6]]
+                            
 
-                            book_delim_check = self.validate.validate_book_delimiter(book_delim)
-                            id_check = self.validate.validate_book_id(book_id)
-                            title_check = self.validate.validate_book_title(book_title)
-                            loan_check = self.validate.validate_t_f(book_loan_check)
-                            book_publisher_check = self.validate.validate_book_publisher(book_publisher)
-                            book_writer_check = self.validate.validate_book_writer(book_writer[0])
-                            name_delim_check = self.validate.validate_name_delimiter(name_delim[0])
+                            if len(name_delim) == 0 and len(book_writer) == 0:
+                                book_delim_check = self.validate.validate_book_delimiter(book_delim)
+                                id_check = self.validate.validate_book_id(book_id)
+                                title_check = self.validate.validate_book_title(book_title)
+                                loan_check = self.validate.validate_t_f(book_loan_check)
+                                book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+                                book_writer_check = True
+                                name_delim_check = True
+                                
+                            else: 
+                                book_delim_check = self.validate.validate_book_delimiter(book_delim)
+                                id_check = self.validate.validate_book_id(book_id)
+                                title_check = self.validate.validate_book_title(book_title)
+                                loan_check = self.validate.validate_t_f(book_loan_check)
+                                book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+                                for i in range(len(book_writer)):
+                                    book_writer_check = self.validate.validate_book_writer(book_writer[i])
+                                    if not book_writer_check:
+                                        break
+                                for i in range(len(book_writer)):
+                                    name_delim_check = self.validate.validate_name_delimiter(name_delim[i])
+                                    if not name_delim_check:
+                                        break
+                               
 
                             if not (book_delim_check and id_check and title_check and loan_check and book_publisher_check and book_writer_check and name_delim_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
@@ -222,25 +256,63 @@ class File_util:
                 else:
                     line_count =0
                     for line in lines:
+                        if line=='':
+                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            time.sleep(0.1)
+                            sys.exit()
                         parts = line.split(',')
-                        if not len(parts)==7:
+                        if not len(parts)%2==1:
                             print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
                             book_delim,book_id,book_title,book_loan_check = parts[0],parts[1],parts[2],parts[3]
-                            book_publisher= parts[4]
+                            book_publisher = parts[4]
+                            book_writer = []
+                            name_delim = []
+                            for i in range(5,len(parts)):
+                                if i%2 == 1:
+                                    if not parts[i]=="":
+                                        book_writer.append(parts[i])
+                                    else:
+                                        book_writer.append("")
+                                else:
+                                    if not parts[i]=="":
+                                        name_delim.append(parts[i])
+                                    else:
+                                        name_delim.append("")
+                        
+                            if not len(name_delim) == len(book_writer):
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                time.sleep(0.1)
+                                sys.exit()
 
-                            book_writer = [parts[5]]
-                            name_delim = [parts[6]]
+                            
 
-                            book_delim_check = self.validate.validate_book_delimiter(book_delim)
-                            id_check = self.validate.validate_book_id(book_id)
-                            title_check = self.validate.validate_book_title(book_title)
-                            loan_check = self.validate.validate_t_f(book_loan_check)
-                            book_publisher_check = self.validate.validate_book_publisher(book_publisher)
-                            book_writer_check = self.validate.validate_book_writer(book_writer[0])
-                            name_delim_check = self.validate.validate_name_delimiter(name_delim[0])
+                            if len(name_delim) == 0 and len(book_writer) == 0:
+                                book_delim_check = self.validate.validate_book_delimiter(book_delim)
+                                id_check = self.validate.validate_book_id(book_id)
+                                title_check = self.validate.validate_book_title(book_title)
+                                loan_check = self.validate.validate_t_f(book_loan_check)
+                                book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+                                book_writer_check = True
+                                name_delim_check = True
+                                
+                            else: 
+                                book_delim_check = self.validate.validate_book_delimiter(book_delim)
+                                id_check = self.validate.validate_book_id(book_id)
+                                title_check = self.validate.validate_book_title(book_title)
+                                loan_check = self.validate.validate_t_f(book_loan_check)
+                                book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+                                for i in range(len(book_writer)):
+                                    book_writer_check = self.validate.validate_book_writer(book_writer[i])
+                                    if not book_writer_check:
+                                        break
+                                for i in range(len(book_writer)):
+                                    name_delim_check = self.validate.validate_name_delimiter(name_delim[i])
+                                    if not name_delim_check:
+                                        break
+                               
 
                             if not (book_delim_check and id_check and title_check and loan_check and book_publisher_check and book_writer_check and name_delim_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
