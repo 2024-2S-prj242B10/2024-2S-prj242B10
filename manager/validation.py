@@ -263,7 +263,7 @@ class File_util:
         if os.path.exists('data/userlist.txt'):
             with open('data/userlist.txt','r',encoding='utf-8') as file:
                 lines = file.read().rstrip().split('\n')
-                if len(lines) > 11:
+                if len(lines) > var.MAX_USER_CNT+1:
                     print('userlist.txt파일의 내용이 제한을 초과하였습니다. 프로그램을 종료합니다.')
                     time.sleep(0.1)
                     sys.exit()
