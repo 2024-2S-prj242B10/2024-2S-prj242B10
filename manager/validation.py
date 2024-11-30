@@ -216,14 +216,18 @@ class File_util:
                                     else:
                                         name_delim.append("")
                         
-                            if not len(name_delim) == len(book_writer):
+                            if not len(name_delim) == len(book_writer): #작가와 이름 구분자 수가 맞지 않은 경우
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                time.sleep(0.1)
+                                sys.exit()
+                            
+                            if len(name_delim)>var.MAX_WRITER_CNT:
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
-                            
 
-                            if len(name_delim) == 0 and len(book_writer) == 0:
+                            if len(name_delim) == 0 and len(book_writer) == 0: #작가가 없는 경우
                                 book_delim_check = self.validate.validate_book_delimiter(book_delim)
                                 id_check = self.validate.validate_book_id(book_id)
                                 title_check = self.validate.validate_book_title(book_title)
@@ -233,7 +237,7 @@ class File_util:
                                 name_delim_check = True
                                 
                             else: 
-                                book_delim_check = self.validate.validate_book_delimiter(book_delim)
+                                book_delim_check = self.validate.validate_book_delimiter(book_delim) #작가가 1명 이상인 경우
                                 id_check = self.validate.validate_book_id(book_id)
                                 title_check = self.validate.validate_book_title(book_title)
                                 loan_check = self.validate.validate_t_f(book_loan_check)
@@ -287,6 +291,10 @@ class File_util:
                                 time.sleep(0.1)
                                 sys.exit()
 
+                            if len(name_delim)>var.MAX_WRITER_CNT:
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                time.sleep(0.1)
+                                sys.exit()
                             
 
                             if len(name_delim) == 0 and len(book_writer) == 0:
