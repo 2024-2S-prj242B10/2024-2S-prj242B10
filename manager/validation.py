@@ -288,7 +288,7 @@ class File_util:
                             stored_date = parts[15] # 입고일
                             deleted_date = parts[16] # 삭제일
 
-                            print(writer_str)
+                            
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.3')
                                 time.sleep(0.1)
