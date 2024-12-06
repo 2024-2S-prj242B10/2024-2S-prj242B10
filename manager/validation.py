@@ -288,7 +288,6 @@ class File_util:
                             stored_date = parts[15] # 입고일
                             deleted_date = parts[16] # 삭제일
 
-                            
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
@@ -395,8 +394,6 @@ class File_util:
                 time.sleep(0.1)
                 sys.exit()
     
-   
-    
     #loglist.txt 무결성
     def validate_loglist_file(self):
         if os.path.exists('data/loglist.txt'):
@@ -454,5 +451,75 @@ class File_util:
                     print('data 디렉토리에 loglist.txt파일 생성을 완료했습니다.')
             except:
                 print('data 디렉토리에 loglist.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
+                time.sleep(0.1)
+                sys.exit()
+
+
+    #totallog.txt 무결성    
+    def validate_totallog_file(self):
+        if os.path.exists('data/totallog.txt'):
+            with open('data/totallog.txt','r',encoding='utf-8') as file:
+                lines = file.read().rstrip().split('\n')
+                if len(lines)==1:
+                    if lines[0] == '': #빈 파일일 경우
+                        return
+                    else:
+                        parts = lines[0].split(',')
+                        if not len(parts) ==5:
+                            print('totallog.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            time.sleep(0.1)
+                            sys.exit()
+                        else:
+                            book_id,user_id,book_loan_check,loan_date = parts[0],parts[1],parts[2],parts[3]
+                            expected_return_date= parts[4]
+    
+                            
+            
+                            book_id_check = self.validate.validate_book_id(book_id)
+                            user_id_check = self.validate.validate_user_id(user_id)
+                            loan_check = self.validate.validate_t_f(book_loan_check)
+                            loan_date_check =self.validate.validate_date(loan_date)
+                            expected_return_date_check = self.validate.validate_date(expected_return_date)
+
+                            if not (book_id_check and user_id_check and loan_check
+                                     and loan_date_check and expected_return_date_check):
+                                print('totallog.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                time.sleep(0.1)
+                                sys.exit()
+                else: 
+                    for line in lines:
+                        if line=='':
+                            print('totallog.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            time.sleep(0.1)
+                            sys.exit()
+                        parts = line.split(',')
+                        if not len(parts)==5:
+                            print('totallog.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            time.sleep(0.1)
+                            sys.exit()
+                        else:
+                            book_id,user_id,book_loan_check,loan_date = parts[0],parts[1],parts[2],parts[3]
+                            expected_return_date= parts[4]
+    
+                            
+            
+                            book_id_check = self.validate.validate_book_id(book_id)
+                            user_id_check = self.validate.validate_user_id(user_id)
+                            loan_check = self.validate.validate_t_f(book_loan_check)
+                            loan_date_check =self.validate.validate_date(loan_date)
+                            expected_return_date_check = self.validate.validate_date(expected_return_date)
+
+                            if not (book_id_check and user_id_check and loan_check
+                                     and loan_date_check and expected_return_date_check):
+                                print('totallog.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                time.sleep(0.1)
+                                sys.exit()
+        else:
+            try:
+                with open('data/totallog.txt','w',encoding='utf-8'):
+                    pass
+                print('data 디렉토리에 totallog.txt파일 생성을 완료했습니다.')
+            except:
+                print('data 디렉토리에 totallog.txt파일 생성에 실패했습니다. 프로그램을 종료합니다.')
                 time.sleep(0.1)
                 sys.exit()

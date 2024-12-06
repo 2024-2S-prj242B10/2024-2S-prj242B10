@@ -17,6 +17,7 @@ def main():
     file_util.validate_userlist_file()
     file_util.validate_loglist_file()
     file_util.validate_startinfo_file()
+    file_util.validate_totallog_file()
 
     date_manager = DateManager()
     date_manager.read_file()
