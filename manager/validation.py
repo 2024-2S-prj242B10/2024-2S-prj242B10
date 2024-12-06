@@ -202,9 +202,13 @@ class File_util:
                         else:
                             book_delim,book_id,book_title,book_loan_check = parts[0],parts[1],parts[2],parts[3]
                             book_publisher = parts[4]
+
+                            stored_date = parts[5] # 입고일
+                            deleted_date = parts[6] # 삭제일
+
                             book_writer = []
                             name_delim = []
-                            for i in range(5,len(parts)):
+                            for i in range(7,len(parts)):
                                 if i%2 == 1:
                                     if not parts[i]=="":
                                         book_writer.append(parts[i])
@@ -233,6 +237,10 @@ class File_util:
                                 title_check = self.validate.validate_book_title(book_title)
                                 loan_check = self.validate.validate_t_f(book_loan_check)
                                 book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+
+                                stored_date_check =self.validate.validate_date(stored_date) # 
+                                deleted_date_check = self.validate.validate_date(deleted_date)
+                                
                                 book_writer_check = True
                                 name_delim_check = True
                                 
@@ -242,6 +250,10 @@ class File_util:
                                 title_check = self.validate.validate_book_title(book_title)
                                 loan_check = self.validate.validate_t_f(book_loan_check)
                                 book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+
+                                stored_date_check =self.validate.validate_date(stored_date)
+                                deleted_date_check = self.validate.validate_date(deleted_date)
+
                                 for i in range(len(book_writer)):
                                     book_writer_check = self.validate.validate_book_writer(book_writer[i])
                                     if not book_writer_check:
@@ -252,7 +264,9 @@ class File_util:
                                         break
                                
 
-                            if not (book_delim_check and id_check and title_check and loan_check and book_publisher_check and book_writer_check and name_delim_check):
+                            if not (book_delim_check and id_check and title_check
+                                     and loan_check and book_publisher_check and book_writer_check
+                                       and name_delim_check and stored_date_check and deleted_date_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
@@ -272,9 +286,11 @@ class File_util:
                         else:
                             book_delim,book_id,book_title,book_loan_check = parts[0],parts[1],parts[2],parts[3]
                             book_publisher = parts[4]
+                            stored_date = parts[5] # 입고일
+                            deleted_date = parts[6] # 삭제일
                             book_writer = []
                             name_delim = []
-                            for i in range(5,len(parts)):
+                            for i in range(7,len(parts)):
                                 if i%2 == 1:
                                     if not parts[i]=="":
                                         book_writer.append(parts[i])
@@ -303,6 +319,8 @@ class File_util:
                                 title_check = self.validate.validate_book_title(book_title)
                                 loan_check = self.validate.validate_t_f(book_loan_check)
                                 book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+                                stored_date_check =self.validate.validate_date(stored_date)
+                                deleted_date_check = self.validate.validate_date(deleted_date)
                                 book_writer_check = True
                                 name_delim_check = True
                                 
@@ -312,6 +330,8 @@ class File_util:
                                 title_check = self.validate.validate_book_title(book_title)
                                 loan_check = self.validate.validate_t_f(book_loan_check)
                                 book_publisher_check = self.validate.validate_book_publisher(book_publisher)
+                                stored_date_check =self.validate.validate_date(stored_date)
+                                deleted_date_check = self.validate.validate_date(deleted_date)
                                 for i in range(len(book_writer)):
                                     book_writer_check = self.validate.validate_book_writer(book_writer[i])
                                     if not book_writer_check:
@@ -322,7 +342,9 @@ class File_util:
                                         break
                                
 
-                            if not (book_delim_check and id_check and title_check and loan_check and book_publisher_check and book_writer_check and name_delim_check):
+                            if not (book_delim_check and id_check and title_check
+                                     and loan_check and book_publisher_check and book_writer_check
+                                       and name_delim_check and stored_date_check and deleted_date_check):
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
