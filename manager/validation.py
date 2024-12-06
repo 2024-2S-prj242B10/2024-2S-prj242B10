@@ -200,7 +200,7 @@ class File_util:
             with open('data/booklist.txt','r',encoding='utf-8') as file:
                 lines = file.read().rstrip().split('\n')
                 if len(lines) > var.MAX_BOOK_CNT:
-                    print('booklist.txt파일의 내용이 제한을 초과하였습니다. 프로그램을 종료합니다.1')
+                    print('booklist.txt파일의 내용이 제한을 초과하였습니다. 프로그램을 종료합니다.')
                     time.sleep(0.1)
                     sys.exit()
                 elif len(lines)==1:
@@ -210,7 +210,7 @@ class File_util:
                     else:
                         parts = lines[0].split(',')
                         if not len(parts)%2==1:
-                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.2')
+                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
@@ -232,7 +232,7 @@ class File_util:
                             deleted_date = parts[16]# 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.3')
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
@@ -254,7 +254,7 @@ class File_util:
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
                                          and stored_date_check and deleted_date_check):
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.4')
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                             self.book_count = 1
@@ -290,7 +290,7 @@ class File_util:
 
                             
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.3')
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
@@ -312,7 +312,7 @@ class File_util:
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
                                          and stored_date_check and deleted_date_check):
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.4')
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                         line_count +=1
