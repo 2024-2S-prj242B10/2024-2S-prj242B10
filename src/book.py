@@ -14,7 +14,8 @@ class Book:
         self.deleted_date = deleted_date        # 삭제일
 
     def __str__(self):
-        authors_str = ', '.join([f"{author[0]} [{author[1]}]" for author in self.authors])
+        #authors_str = ', '.join([f"{author[0]} [{author[1]}]" for author in self.authors])
+        authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in self.authors if author_code != "-" or author_name != "-"])
         return (f"도서 ID: {self.book_id}, 도서 구분자: {self.book_code}, 제목: {self.title}, "
                 f"출판사: {self.publisher}, 저자: {authors_str}, 대출 상태: {'대출 중' if self.is_loaned else '대출 가능'}")
 
@@ -198,8 +199,10 @@ class BookManager:
             if code != '-':
                 self.authors[code] = name
 
-        print(self.authors)
-        print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {author_list}")
+        
+        authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in author_list if author_code != "-" or author_name != "-"])
+        
+        print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {authors_str}")
         print("관리자 메뉴로 돌아갑니다.")
 
 
@@ -227,7 +230,9 @@ class BookManager:
             print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
             print("=" * 130)
             for book in sorted_books[:count]:
-                authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+                #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+                authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
+
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 status = '대출 중' if book.is_loaned else '대출 가능'
                 print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
@@ -241,7 +246,8 @@ class BookManager:
         print("=" * 130)
         if sorted_books:
             for book in sorted_books:
-                authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+                #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+                authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 status = '대출 중' if book.is_loaned else '대출 가능'
                 print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")

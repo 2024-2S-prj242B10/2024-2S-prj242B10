@@ -130,7 +130,8 @@ class Prompt:
                                     print(f"도서 구분자: {book.book_code}")
                                     print(f"제목: {book.title}")
                                     print(f"출판사: {book.publisher}")
-                                    authors_str = ', '.join([f"{author[1]} [{author[0]}]" for author in book.authors])
+                                    #authors_str = ', '.join([f"{author[1]} [{author[0]}]" for author in book.authors])
+                                    authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
                                     print(f"저자: {authors_str}")
                                     print(f"대출 상태: {'대출 중' if book.is_loaned else '대출 가능'}\n")
                                     if input("도서를 삭제하시겠습니까? (y / 다른 키를 입력하면 등록을 취소하고 관리자 메뉴로 이동합니다.):").strip() == 'y':
