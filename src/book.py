@@ -162,7 +162,8 @@ class BookManager:
         return [code for code, name in self.authors.items() if name == author_name]
 
     def register_book(self, title, publisher, author_list):
-        book_code = self.generate_book_code()
+        new_book_code = self.generate_book_code()
+        book_code = new_book_code
 
         with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
             start_date = date_file.readline().strip()  # 첫 번째 줄 읽기 및 공백 제거
@@ -173,11 +174,11 @@ class BookManager:
                 print("기존에 동일한 도서가 존재합니다.")
                 confirm_duplicate = input("동일한 도서에 대해 추가 등록하시겠습니까? (y / 다른 키를 입력하면 취소합니다.): ").strip()
                 if confirm_duplicate != 'y':
-                    
-                    print("중복된 도서가 이미 존재합니다. 관리자 메뉴로 돌아갑니다.")
-                    return
+                    book_code = new_book_code
+                    #print("중복된 도서가 이미 존재합니다. 관리자 메뉴로 돌아갑니다.")
+                    print("동일한 도서 추가 등록 진행")
+                    break
                 break
-
         
         new_book_id = self.generate_book_id()
         new_book = Book(new_book_id, title, publisher, author_list, book_code, False, start_date)
@@ -185,11 +186,11 @@ class BookManager:
         self.save_books()
         # self.authors[author_list[0][0]] = author_list[0][1]
        
-        for i in range(5):
-            if(author_list[i][0] != '-'):
+        for i in range(5): # 이쪽 구문 잘 동작하는지 테스트 안해봤음
+            if(author_list[i][0] != '-'): 
                 self.authors[author_list[i][0]] = author_list[i][1]
-        
-        # print(self.authors)
+
+        #print(self.authors)
         print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {author_list}")
         print("관리자 메뉴로 돌아갑니다.")
 
