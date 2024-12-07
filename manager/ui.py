@@ -69,7 +69,8 @@ class Prompt:
                         continue
 
                     author_list = []
-                    max_attempts = 5 # 이것도 나중에 상수로 빼는게 좋을듯?
+                    var = Var()
+                    max_attempts = var.MAX_WRITER_CNT # 이것도 나중에 상수로 빼는게 좋을듯?
                     attempt = 0
                     valid_input = True  # Flag 변수 추가
                     

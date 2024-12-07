@@ -1,6 +1,7 @@
 import csv
 import os
 import random
+from manager.var import Var as var
 
 class Book:
     def __init__(self, book_id, title, publisher, authors, book_code, is_loaned=False, registered_date=None, deleted_date=""):
@@ -40,14 +41,15 @@ class BookManager:
                     
                     # 저자 정보 추출: 5번째 인덱스부터 10개의 값을 가져와 2개씩 묶음
                     authors = []
-                    for i in range(5, 15, 2):  # 5부터 시작해서 2개씩 건너뛰기 (5~14)
+                    max_index = 5 + var.MAX_WRITER_CNT * 2
+                    for i in range(5, max_index, 2):  # 5부터 시작해서 2개씩 건너뛰기 (5~14)
                         author_code = row[i] if i < len(row) else "-"
                         author_name = row[i+1] if (i+1) < len(row) else "-"
                         authors.append((author_code.strip("[]"), author_name.strip("[]")))
 
                     # 등록일과 삭제일 추출
-                    registered_date = row[15] if len(row) > 15 else ""  # 등록일
-                    deleted_date = row[16] if len(row) > 16 else ""     # 삭제일
+                    registered_date = row[max_index] if len(row) > max_index else ""  # 등록일
+                    deleted_date = row[max_index+1] if len(row) > max_index+1 else ""     # 삭제일
 
                     # Book 객체 생성 및 리스트에 추가
                     books.append(Book(
