@@ -114,11 +114,34 @@ class Prompt:
                         print("도서 등록을 취소합니다. 관리자 메뉴로 돌아갑니다.")
                     continue
 
-                # 이하 다른 메뉴는 그대로 유지
+                
                 elif command == 2:  # 도서 삭제
                     print("-------------------------------------------")
                     print("삭제할 도서의 정보를 입력해주세요.")
-                    # 도서 삭제 로직은 동일
+                    book_id = input("도서 ID: ").strip()
+                    if validate.validate_book_id(book_id):
+                        if validate.validate_book_exist(book_id):
+                            if validate.validate_book_can_borrow(book_id):
+                                book = book_manager.search_book_by_id(book_id)
+                                print(f"\n삭제할 도서 정보:")
+                                print(f"도서 ID: {book.book_id}")
+                                print(f"도서 구분자: {book.book_code}")
+                                print(f"제목: {book.title}")
+                                print(f"출판사: {book.publisher}")
+                                authors_str = ', '.join([f"{author[1]} [{author[0]}]" for author in book.authors])
+                                print(f"저자: {authors_str}")
+                                print(f"대출 상태: {'대출 중' if book.is_loaned else '대출 가능'}\n")
+                                if input("도서를 삭제하시겠습니까? (y / 다른 키를 입력하면 등록을 취소하고 관리자 메뉴로 이동합니다.):").strip() == 'y':
+                                    book_manager.delete_book(book_id)
+                                else:
+                                    print("도서 삭제를 취소합니다. 관리자 메뉴로 돌아갑니다.")
+                                    pass
+                            else:
+                                print("대출 중인 도서는 삭제할 수 없습니다. 관리자 메뉴로 돌아갑니다.")
+                        else:
+                            print(f"존재하지 않는 도서입니다. 관리자 메뉴로 돌아갑니다.")
+                    else:
+                        print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
                     continue
                 elif command == 3:  # 도서 검색
                     print("-------------------------------------------")

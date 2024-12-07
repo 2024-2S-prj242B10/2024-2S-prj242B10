@@ -3,7 +3,7 @@ import os
 import random
 
 class Book:
-    def __init__(self, book_id, title, publisher, authors, book_code, is_loaned=False, registered_date=None, deleted_date=None):
+    def __init__(self, book_id, title, publisher, authors, book_code, is_loaned=False, registered_date=None, deleted_date=""):
         self.book_id = book_id
         self.title = title
         self.publisher = publisher
@@ -102,8 +102,8 @@ class BookManager:
                     row.append(f"[{author_name},{author_code}]")
 
                 # 등록일과 삭제일 추가
-                row.append(start_date)  # startdate.txt에서 읽어온 등록일
-                row.append("")          # 삭제일은 공백
+                row.append(book.registered_date)  # startdate.txt에서 읽어온 등록일
+                row.append(book.deleted_date) # 삭제일은 공백
 
                 # 쉼표로 구분된 문자열로 변환 후 파일에 쓰기
                 file.write(",".join(row) + "\n")
@@ -163,18 +163,24 @@ class BookManager:
 
     def register_book(self, title, publisher, author_list):
         book_code = self.generate_book_code()
+
+        with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
+            start_date = date_file.readline().strip()  # 첫 번째 줄 읽기 및 공백 제거
+
         for book in self.books:
             if book.title == title and book.publisher == publisher and book.authors == author_list:
                 book_code = book.book_code
                 print("기존에 동일한 도서가 존재합니다.")
                 confirm_duplicate = input("동일한 도서에 대해 추가 등록하시겠습니까? (y / 다른 키를 입력하면 취소합니다.): ").strip()
                 if confirm_duplicate != 'y':
+                    
                     print("중복된 도서가 이미 존재합니다. 관리자 메뉴로 돌아갑니다.")
                     return
                 break
 
+        
         new_book_id = self.generate_book_id()
-        new_book = Book(new_book_id, title, publisher, author_list, book_code)
+        new_book = Book(new_book_id, title, publisher, author_list, book_code, False, start_date)
         self.books.append(new_book)
         self.save_books()
         # self.authors[author_list[0][0]] = author_list[0][1]
@@ -189,9 +195,13 @@ class BookManager:
 
 
     def delete_book(self, book_id):
+        with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
+            delete_date = date_file.readline().strip()  # 첫 번째 줄 읽기 및 공백 제거
+
         for book in self.books:
             if book.book_id == book_id:
-                self.books.remove(book)
+                # self.books.remove(book)
+                book.deleted_date = delete_date  # 삭제일 필드에 삭제 날짜 기록
                 self.save_books()
                 print(f"도서 '{book.title}'이(가) 삭제되었습니다.")
                 return
