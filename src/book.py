@@ -34,7 +34,7 @@ class BookManager:
     #                 authors = [(author_code, author_name)]
     #                 books.append(Book(book_id, title, publisher, authors, book_code, is_loaned == 'True'))
     #     return books
-
+        
     def load_books(self):
         books = []
         if os.path.exists(self.book_file_path):
@@ -48,18 +48,17 @@ class BookManager:
                     is_loaned = row[3] == 'True'  # 대출 상태
                     publisher = row[4]      # 출판사
                     
-                    # 저자 정보 (5명 고정)
+                    # 저자 정보 추출: 5번째 인덱스부터 10개의 값을 가져와 2개씩 묶음
                     authors = []
-                    for i in range(5):  # 5명의 저자 정보 처리
-                        author_entry = row[5 + i]  # 저자 정보는 5번째 열부터 시작
-                        author_entry = author_entry.strip("[]")  # 대괄호 제거
-                        author_code, author_name = author_entry.split(",") if "," in author_entry else ("-", "-")
-                        authors.append((author_code, author_name))
-                    
+                    for i in range(5, 15, 2):  # 5부터 시작해서 2개씩 건너뛰기 (5~14)
+                        author_code = row[i] if i < len(row) else "-"
+                        author_name = row[i+1] if (i+1) < len(row) else "-"
+                        authors.append((author_code.strip("[]"), author_name.strip("[]")))
+
                     # 등록일과 삭제일 추출
-                    registered_date = row[10]  # 5명 저자 뒤의 등록일
-                    deleted_date = row[11]     # 삭제일
-                    
+                    registered_date = row[15] if len(row) > 15 else ""  # 등록일
+                    deleted_date = row[16] if len(row) > 16 else ""     # 삭제일
+
                     # Book 객체 생성 및 리스트에 추가
                     books.append(Book(
                         book_id=book_id,
@@ -72,6 +71,7 @@ class BookManager:
                         deleted_date=deleted_date
                     ))
         return books
+
 
     # def save_books(self):
     #     with open(self.book_file_path, 'w', encoding='utf-8', newline='') as file:
