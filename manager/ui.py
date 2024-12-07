@@ -2,6 +2,7 @@ from manager.validation import *
 from manager.var import *
 from src.user import *
 from src.book import *
+from manager.var import *
 
 class Prompt:
 
@@ -69,7 +70,7 @@ class Prompt:
                         continue
 
                     author_list = []
-                    var = Var()
+                    #var = Var()
                     max_attempts = var.MAX_WRITER_CNT # 이것도 나중에 상수로 빼는게 좋을듯?
                     attempt = 0
                     valid_input = True  # Flag 변수 추가
