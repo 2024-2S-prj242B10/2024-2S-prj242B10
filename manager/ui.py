@@ -68,16 +68,52 @@ class Prompt:
                     if not(validate.validate_book_title(register_title)):
                         print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
                         continue
+                    
+                    
+                    # register_author = input("도서 저자: ").strip()
+                    # if not(validate.validate_book_writer(register_author)):
+                    #     print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
+                    #     continue
 
-                    register_author = input("도서 저자: ").strip()
-                    if not(validate.validate_book_writer(register_author)):
-                        print("올바르지 않은 입력형식입니다. 관리자 메뉴로 돌아갑니다.")
-                        continue
+                    # author_code, author_name = book_manager.add_author(register_author)
+                    # if not author_code:
+                    #     continue
+                    # author_list = [(author_code, author_name)]
 
-                    author_code, author_name = book_manager.add_author(register_author)
-                    if not author_code:
-                        continue
-                    author_list = [(author_code, author_name)]
+                    author_list = []
+                    max_attempts = 5 #이거 5도 나중에 상수로 빼는게 좋을듯?
+                    attempt = 0
+
+                    while attempt < max_attempts: 
+                        register_author = input(f"{attempt + 1}번째 도서 저자(없다면 그냥 엔터): ").strip()
+
+                        # 공백 입력이면 즉시 종료
+                        if not register_author:
+                            print("")
+                            break
+
+                        # 입력값 형식 검증
+                        if not validate.validate_book_writer(register_author):
+                            print("올바르지 않은 입력 형식입니다. 다시 입력해주세요.")
+                            continue  # 유효하지 않은 입력은 반복 횟수에 포함하지 않음
+
+                        # 저자 코드와 이름 추가
+                        author_code, author_name = book_manager.add_author(register_author)
+                        if not author_code:
+                            continue  # 실패 시 다시 입력
+
+                        author_list.append((author_code, author_name))  # 리스트에 추가
+                        attempt += 1  # 입력 성공 시 카운터 증가
+
+                    # 나머지 빈 공간을 [-,-]로 채우기
+                    while len(author_list) < max_attempts:
+                        author_list.append(("-", "-"))
+
+                    # formatted_author_list = ",".join([f"[{name},{code}]" for name, code in author_list])
+                    # 결과 출력
+                    # print("\n최종 저자 목록:")
+                    #for author in author_list:
+                    # print(formatted_author_list)
 
                     register_publisher = input("도서 출판사: ").strip()
                     if not (validate.validate_book_publisher(register_publisher)):
