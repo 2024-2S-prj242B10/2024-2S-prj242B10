@@ -114,7 +114,7 @@ class BookManager:
         authors = {}
         for book in self.books:
             for author_code, author_name in book.authors:
-                if author_code not in authors:
+                if author_name != '-' and author_code not in authors:
                     authors[author_code] = author_name
         return authors
 
@@ -186,11 +186,11 @@ class BookManager:
         self.save_books()
         # self.authors[author_list[0][0]] = author_list[0][1]
        
-        for i in range(5): # 이쪽 구문 잘 동작하는지 테스트 안해봤음
+        for i in range(5): 
             if(author_list[i][0] != '-'): 
                 self.authors[author_list[i][0]] = author_list[i][1]
 
-        #print(self.authors)
+        print(self.authors)
         print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {author_list}")
         print("관리자 메뉴로 돌아갑니다.")
 

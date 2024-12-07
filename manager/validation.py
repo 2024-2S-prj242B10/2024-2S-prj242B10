@@ -2,7 +2,6 @@ import re
 import os
 import sys
 import time
-
 from src.book import BookManager
 from datetime import datetime
 from manager.var import Var as var
@@ -261,14 +260,18 @@ class File_util:
                             stored_date_check =self.validate.validate_date(stored_date)
                             deleted_date_check = self.validate.validate_date(deleted_date)
                             for i in range(len(writer_str)):
-                                writer_str_check = self.validate.validate_writer_element(writer_str[i])
+                                if writer_str[i] == '[-,-]':
+                                    writer_str_check = True
+                                else:
+                                    writer_str_check = self.validate.validate_writer_element(writer_str[i])
+                               
                                 if not writer_str_check:
                                     break
                                
 
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
-                                         and stored_date_check and deleted_date_check):
+                                         and stored_date_check): # and deleted_date_check
                                 print('3 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
