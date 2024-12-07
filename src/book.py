@@ -33,13 +33,42 @@ class BookManager:
                     books.append(Book(book_id, title, publisher, authors, book_code, is_loaned == 'True'))
         return books
 
+    # def save_books(self):
+    #     with open(self.book_file_path, 'w', encoding='utf-8', newline='') as file:
+    #         writer = csv.writer(file)
+    #         for book in self.books:
+    #             author_code, author_name = book.authors[0]
+    #             writer.writerow(
+    #                 [book.book_code, book.book_id, book.title, str(book.is_loaned), book.publisher, author_name, author_code])
+
     def save_books(self):
-        with open(self.book_file_path, 'w', encoding='utf-8', newline='') as file:
-            writer = csv.writer(file)
+        with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
+            start_date = date_file.readline().strip()  # 첫 번째 줄 읽기 및 공백 제거
+
+        # 도서 정보를 파일에 저장
+        with open(self.book_file_path, 'w', encoding='utf-8') as file:
             for book in self.books:
-                author_code, author_name = book.authors[0]
-                writer.writerow(
-                    [book.book_code, book.book_id, book.title, str(book.is_loaned), book.publisher, author_name, author_code])
+                # 기본 정보 저장
+                row = [
+                    book.book_code,  # 도서 구분자
+                    book.book_id,    # 도서 ID
+                    book.title,      # 도서 제목
+                    str(book.is_loaned),  # 대출 상태
+                    book.publisher   # 출판사
+                ]
+
+                # 저자 목록을 [이름,코드] 형식으로 추가
+                for author_name, author_code in book.authors:
+                    row.append(f"[{author_name},{author_code}]")
+
+                # 등록일과 삭제일 추가
+                row.append(start_date)  # startdate.txt에서 읽어온 등록일
+                row.append("")          # 삭제일은 공백
+
+                # 쉼표로 구분된 문자열로 변환 후 파일에 쓰기
+                file.write(",".join(row) + "\n")
+
+
 
     def build_authors(self):
         authors = {}
@@ -108,10 +137,16 @@ class BookManager:
         new_book = Book(new_book_id, title, publisher, author_list, book_code)
         self.books.append(new_book)
         self.save_books()
-        self.authors[author_list[0][0]] = author_list[0][1]
-
+        # self.authors[author_list[0][0]] = author_list[0][1]
+       
+        for i in range(5):
+            if(author_list[i][0] != '-'):
+                self.authors[author_list[i][0]] = author_list[i][1]
+        
+        # print(self.authors)
         print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {author_list}")
         print("관리자 메뉴로 돌아갑니다.")
+
 
     def delete_book(self, book_id):
         for book in self.books:
