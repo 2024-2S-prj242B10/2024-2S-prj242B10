@@ -91,7 +91,7 @@ class Validate():
             return True
         return False
     
-    '''
+    
     def validate_book_writer(self,writer):
         if re.fullmatch(r'^[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,18}[a-zA-Z가-힣0-9])?$',writer):
             return True
@@ -101,17 +101,32 @@ class Validate():
         if re.fullmatch(r'^(100|[1-9][0-9]{2})$',name_delimiter):
             return True
         return False
-    '''
+    
+    # def validate_writer_element(self, writer_element):
+    #     """Validate the entire file element."""
+    #     # Combined regex for the whole file element
+    #     element_regex = (
+    #         r'^\['
+    #         r'('
+    #         r'[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,18}[a-zA-Z가-힣0-9])?'  # Author name
+    #         r'),'
+    #         r'(100|[1-9][0-9]{2})'  # Book delimiter
+    #         r'\]$|^\[,]$'  # Or just [,]
+    #     )
+    #     return bool(re.fullmatch(element_regex, writer_element))
+
+
     def validate_writer_element(self, writer_element):
         """Validate the entire file element."""
-        # Combined regex for the whole file element
+        # 정규 표현식 수정: [저자코드,저자명]
         element_regex = (
             r'^\['
+            r'(100|[1-9][0-9]{2})'  # 저자 코드: 100~999의 숫자
+            r','  # 쉼표 구분자
             r'('
-            r'[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,18}[a-zA-Z가-힣0-9])?'  # Author name
-            r'),'
-            r'(100|[1-9][0-9]{2})'  # Book delimiter
-            r'\]$|^\[,]$'  # Or just [,]
+            r'[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,18}[a-zA-Z가-힣0-9])?'  # 저자명
+            r')'
+            r'\]$|^\[,]$'  # 또는 단순히 [,] 만 입력된 경우
         )
         return bool(re.fullmatch(element_regex, writer_element))
 
@@ -210,7 +225,7 @@ class File_util:
                     else:
                         parts = lines[0].split(',')
                         if not len(parts)%2==1:
-                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            print('1 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
@@ -232,7 +247,7 @@ class File_util:
                             deleted_date = parts[16]# 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('2 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
@@ -254,7 +269,7 @@ class File_util:
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
                                          and stored_date_check and deleted_date_check):
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('3 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                             self.book_count = 1
@@ -262,12 +277,12 @@ class File_util:
                     line_count =0
                     for line in lines:
                         if line=='':
-                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            print('4 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         parts = line.split(',')
                         if not len(parts)%2==1:
-                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            print('5 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
@@ -289,7 +304,7 @@ class File_util:
                             deleted_date = parts[16] # 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('6 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
@@ -301,17 +316,21 @@ class File_util:
                             loan_check = self.validate.validate_t_f(book_loan_check)
                             book_publisher_check = self.validate.validate_book_publisher(book_publisher)
                             stored_date_check =self.validate.validate_date(stored_date)
-                            deleted_date_check = self.validate.validate_date(deleted_date)
+                            # deleted_date_check = self.validate.validate_date(deleted_date)
                             for i in range(len(writer_str)):
-                                writer_str_check = self.validate.validate_writer_element(writer_str[i])
+                                if writer_str[i] == '[-,-]':
+                                    writer_str_check = True
+                                else:
+                                    writer_str_check = self.validate.validate_writer_element(writer_str[i])
+                               
                                 if not writer_str_check:
                                     break
                                
 
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
-                                         and stored_date_check and deleted_date_check):
-                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                         and stored_date_check): # and deleted_date_check
+                                print('7 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                         line_count +=1
