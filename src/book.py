@@ -23,17 +23,6 @@ class BookManager:
         self.book_file_path = book_file_path
         self.books = self.load_books()
         self.authors = self.build_authors()
-
-    # def load_books(self):
-    #     books = []
-    #     if os.path.exists(self.book_file_path):
-    #         with open(self.book_file_path, 'r', encoding='utf-8') as file:
-    #             reader = csv.reader(file)
-    #             for row in reader:
-    #                 book_code, book_id, title, is_loaned, publisher, author_name, author_code = row
-    #                 authors = [(author_code, author_name)]
-    #                 books.append(Book(book_id, title, publisher, authors, book_code, is_loaned == 'True'))
-    #     return books
         
     def load_books(self):
         books = []
@@ -71,15 +60,6 @@ class BookManager:
                         deleted_date=deleted_date
                     ))
         return books
-
-
-    # def save_books(self):
-    #     with open(self.book_file_path, 'w', encoding='utf-8', newline='') as file:
-    #         writer = csv.writer(file)
-    #         for book in self.books:
-    #             author_code, author_name = book.authors[0]
-    #             writer.writerow(
-    #                 [book.book_code, book.book_id, book.title, str(book.is_loaned), book.publisher, author_name, author_code])
 
     def save_books(self):
         with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
@@ -139,25 +119,6 @@ class BookManager:
             if new_author_code not in existing_codes:
                 return new_author_code
 
-    # def add_author(self, author_name):
-    #     existing_author_codes = self.check_duplicate_author(author_name)
-    #     if existing_author_codes:
-    #         print("[동일한 이름의 저자가 존재합니다. 저자를 선택해주세요.]")
-    #         for code in existing_author_codes:
-    #             print(f"[{code}] - 저자: {author_name}")
-    #         chosen_code = input("선택할 저자의 이름 구분자를 입력하세요 (새로운 저자를 등록하는 경우 0을 입력하세요): ").strip()
-    #         if chosen_code == '0':
-    #             author_code = self.generate_author_code()
-    #         elif chosen_code in existing_author_codes:
-    #             author_code = chosen_code
-    #         else:
-    #             print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
-    #             return None, None
-    #     else:
-    #         author_code = self.generate_author_code()
-
-    #     return author_code, author_name
-
     def add_author(self, author_name, current_authors):
         # 기존 authors와 현재 도서의 입력된 저자 리스트에서 중복 검사
         existing_author_codes = self.check_duplicate_author(author_name)
@@ -194,38 +155,53 @@ class BookManager:
     def check_duplicate_author(self, author_name):
         return [code for code, name in self.authors.items() if name == author_name]
 
+
     def register_book(self, title, publisher, author_list):
-        new_book_code = self.generate_book_code()
-        book_code = new_book_code
+        book_code = self.generate_book_code()
+        duplicate_books = []  # 중복된 도서 목록 저장
 
+        # 시작 날짜 읽기
         with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
-            start_date = date_file.readline().strip()  # 첫 번째 줄 읽기 및 공백 제거
+            start_date = date_file.readline().strip()
 
+        # 제목, 출판사, 저자가 같은 도서 찾기
         for book in self.books:
             if book.title == title and book.publisher == publisher and book.authors == author_list:
-                book_code = book.book_code
-                print("기존에 동일한 도서가 존재합니다.")
-                confirm_duplicate = input("동일한 도서에 대해 추가 등록하시겠습니까? (y / 다른 키를 입력하면 취소합니다.): ").strip()
-                if confirm_duplicate != 'y':
-                    book_code = new_book_code
-                    #print("중복된 도서가 이미 존재합니다. 관리자 메뉴로 돌아갑니다.")
-                    print("동일한 도서 추가 등록 진행")
-                    break
-                break
-        
+                duplicate_books.append((book.book_code, book.title))
+
+        # 중복 도서가 있을 경우
+        if duplicate_books:
+            print("[동일한 제목, 출판사, 저자의 도서가 존재합니다. 추가 등록할 도서를 선택해주세요.]")
+            for code, name in duplicate_books:
+                print(f"[{code}] - 도서명: {name}")
+            
+            chosen_code = input("선택할 도서의 구분자를 입력하세요 (새로운 도서를 등록하려면 0을 입력하세요): ").strip()
+            
+            # 사용자가 0을 입력하면 새로운 도서로 등록
+            if chosen_code == '0':
+                print("새로운 도서로 등록합니다.")
+            elif chosen_code in [code for code, _ in duplicate_books]:
+                print(f"선택된 도서 [{chosen_code}]에 대한 추가 등록을 진행합니다.")
+                book_code = chosen_code  # 기존 도서의 book_code 사용
+            else:
+                print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
+                return  # 등록 중단
+
+        # 새로운 도서 등록
         new_book_id = self.generate_book_id()
         new_book = Book(new_book_id, title, publisher, author_list, book_code, False, start_date)
         self.books.append(new_book)
         self.save_books()
-        # self.authors[author_list[0][0]] = author_list[0][1]
-       
-        for i in range(5): 
-            if(author_list[i][0] != '-'): 
-                self.authors[author_list[i][0]] = author_list[i][1]
+
+        # 저자 리스트를 authors에 추가
+        for code, name in author_list:
+            if code != '-':
+                self.authors[code] = name
 
         print(self.authors)
         print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {author_list}")
         print("관리자 메뉴로 돌아갑니다.")
+
 
 
     def delete_book(self, book_id):
