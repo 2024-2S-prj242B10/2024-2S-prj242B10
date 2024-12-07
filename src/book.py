@@ -3,13 +3,15 @@ import os
 import random
 
 class Book:
-    def __init__(self, book_id, title, publisher, authors, book_code, is_loaned=False):
+    def __init__(self, book_id, title, publisher, authors, book_code, is_loaned=False, registered_date=None, deleted_date=None):
         self.book_id = book_id
         self.title = title
         self.publisher = publisher
         self.authors = authors
         self.book_code = book_code
         self.is_loaned = is_loaned
+        self.registered_date = registered_date  # 생성일
+        self.deleted_date = deleted_date        # 삭제일
 
     def __str__(self):
         authors_str = ', '.join([f"{author[0]} [{author[1]}]" for author in self.authors])
@@ -22,15 +24,53 @@ class BookManager:
         self.books = self.load_books()
         self.authors = self.build_authors()
 
+    # def load_books(self):
+    #     books = []
+    #     if os.path.exists(self.book_file_path):
+    #         with open(self.book_file_path, 'r', encoding='utf-8') as file:
+    #             reader = csv.reader(file)
+    #             for row in reader:
+    #                 book_code, book_id, title, is_loaned, publisher, author_name, author_code = row
+    #                 authors = [(author_code, author_name)]
+    #                 books.append(Book(book_id, title, publisher, authors, book_code, is_loaned == 'True'))
+    #     return books
+
     def load_books(self):
         books = []
         if os.path.exists(self.book_file_path):
             with open(self.book_file_path, 'r', encoding='utf-8') as file:
                 reader = csv.reader(file)
                 for row in reader:
-                    book_code, book_id, title, is_loaned, publisher, author_name, author_code = row
-                    authors = [(author_code, author_name)]
-                    books.append(Book(book_id, title, publisher, authors, book_code, is_loaned == 'True'))
+                    # 기본 정보 추출
+                    book_code = row[0]      # 도서 구분자
+                    book_id = row[1]        # 도서 ID
+                    title = row[2]          # 도서 제목
+                    is_loaned = row[3] == 'True'  # 대출 상태
+                    publisher = row[4]      # 출판사
+                    
+                    # 저자 정보 (5명 고정)
+                    authors = []
+                    for i in range(5):  # 5명의 저자 정보 처리
+                        author_entry = row[5 + i]  # 저자 정보는 5번째 열부터 시작
+                        author_entry = author_entry.strip("[]")  # 대괄호 제거
+                        author_code, author_name = author_entry.split(",") if "," in author_entry else ("-", "-")
+                        authors.append((author_code, author_name))
+                    
+                    # 등록일과 삭제일 추출
+                    registered_date = row[10]  # 5명 저자 뒤의 등록일
+                    deleted_date = row[11]     # 삭제일
+                    
+                    # Book 객체 생성 및 리스트에 추가
+                    books.append(Book(
+                        book_id=book_id,
+                        title=title,
+                        publisher=publisher,
+                        authors=authors,
+                        book_code=book_code,
+                        is_loaned=is_loaned,
+                        registered_date=registered_date,
+                        deleted_date=deleted_date
+                    ))
         return books
 
     # def save_books(self):
