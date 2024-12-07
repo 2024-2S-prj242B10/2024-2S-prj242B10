@@ -139,24 +139,57 @@ class BookManager:
             if new_author_code not in existing_codes:
                 return new_author_code
 
-    def add_author(self, author_name):
+    # def add_author(self, author_name):
+    #     existing_author_codes = self.check_duplicate_author(author_name)
+    #     if existing_author_codes:
+    #         print("[동일한 이름의 저자가 존재합니다. 저자를 선택해주세요.]")
+    #         for code in existing_author_codes:
+    #             print(f"[{code}] - 저자: {author_name}")
+    #         chosen_code = input("선택할 저자의 이름 구분자를 입력하세요 (새로운 저자를 등록하는 경우 0을 입력하세요): ").strip()
+    #         if chosen_code == '0':
+    #             author_code = self.generate_author_code()
+    #         elif chosen_code in existing_author_codes:
+    #             author_code = chosen_code
+    #         else:
+    #             print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
+    #             return None, None
+    #     else:
+    #         author_code = self.generate_author_code()
+
+    #     return author_code, author_name
+
+    def add_author(self, author_name, current_authors):
+        # 기존 authors와 현재 도서의 입력된 저자 리스트에서 중복 검사
         existing_author_codes = self.check_duplicate_author(author_name)
-        if existing_author_codes:
+        current_author_codes = [code for code, name in current_authors if name == author_name]
+
+        all_author_codes = list(set(existing_author_codes + current_author_codes))
+
+        if all_author_codes:  # 중복된 이름이 존재할 경우
             print("[동일한 이름의 저자가 존재합니다. 저자를 선택해주세요.]")
-            for code in existing_author_codes:
+            for code in all_author_codes:
                 print(f"[{code}] - 저자: {author_name}")
-            chosen_code = input("선택할 저자의 이름 구분자를 입력하세요 (새로운 저자를 등록하는 경우 0을 입력하세요): ").strip()
+
+            chosen_code = input("선택할 저자의 구분자를 입력하세요 (새로운 저자를 등록하려면 0을 입력하세요): ").strip()
+
+            # 사용자가 선택한 저자 코드가 현재 저자 리스트에 이미 있는 경우
+            if chosen_code in [code for code, _ in current_authors]:
+                print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
+                return None, None
+            
             if chosen_code == '0':
                 author_code = self.generate_author_code()
-            elif chosen_code in existing_author_codes:
+            elif chosen_code in all_author_codes:
                 author_code = chosen_code
             else:
                 print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
                 return None, None
         else:
+            # 중복이 없을 경우 새로운 코드 생성
             author_code = self.generate_author_code()
 
         return author_code, author_name
+
 
     def check_duplicate_author(self, author_name):
         return [code for code, name in self.authors.items() if name == author_name]
