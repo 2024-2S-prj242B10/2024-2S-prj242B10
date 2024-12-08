@@ -210,7 +210,7 @@ def return_book(user_id):
         if confirm == 'y':
 
             # 반납예정일 먼저 가져와서 토탈로그에 찍히게
-            return_date_ = return_date(user_id, book_id)
+            return_date_ = get_return_date(book_id, user_id)
             update_totallog_return(user_id, book_id, False, return_date_)
 
             # 도서 반납 처리
