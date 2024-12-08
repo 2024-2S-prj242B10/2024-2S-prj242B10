@@ -144,15 +144,15 @@ def update_totallog_return(user_id, book_id, borrow, return_date):
         f.writelines(log_data)
 
 
-def return_date(user_id, book_id):
-    with open(log_file, 'r', encoding='utf-8') as f:
-        logs = f.readlines()
-
-    for log in logs:
-        log_info = log.split(',')
-        if log_info[0].strip() == book_id and log_info[1].strip() == user_id:
-            # 반납 예정일 리턴
-            return log_info[3].strip()
+# def return_date(user_id, book_id):
+#     with open(log_file, 'r', encoding='utf-8') as f:
+#         logs = f.readlines()
+#
+#     for log in logs:
+#         log_info = log.split(',')
+#         if log_info[0].strip() == book_id and log_info[1].strip() == user_id:
+#             # 반납 예정일 리턴
+#             return log_info[3].strip()
 
 
 def update_book_status(book_id):
