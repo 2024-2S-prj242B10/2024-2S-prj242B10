@@ -227,10 +227,12 @@ class BookManager:
         print(f"ID가 {book_id}인 도서를 찾을 수 없습니다.")
 
     def display_books(self, count=None):
-        if not self.books:
+        books = self.load_books()
+
+        if not books:
             print("등록된 책이 없습니다.")
         else:
-            sorted_books = sorted(self.books, key=lambda book: book.book_id)
+            sorted_books = sorted(books, key=lambda book: book.book_id)
             if count is None or count > len(sorted_books):
                 count = len(sorted_books)
             print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
@@ -240,13 +242,20 @@ class BookManager:
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
 
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
-                status = '대출 중' if book.is_loaned else '대출 가능'
+                # 상태 필드 설정
+                if book.deleted_date.strip():  # 삭제된 도서라면
+                    status = f"삭제된 도서 [{book.deleted_date}]"
+                else:
+                    status = '대출 중' if book.is_loaned else '대출 가능'
                 print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 130)
 
+
     def search_book_by_title(self, title):
+        books = self.load_books()
+
         title = title.strip()
-        found_books = [book for book in self.books if book.title.strip() == title]
+        found_books = [book for book in books if book.title.strip() == title]
         sorted_books = sorted(found_books, key=lambda book: book.book_id)
         print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
         print("=" * 130)
@@ -255,7 +264,11 @@ class BookManager:
                 #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
-                status = '대출 중' if book.is_loaned else '대출 가능'
+                # 상태 필드 설정
+                if book.deleted_date.strip():  # 삭제된 도서라면
+                    status = f"삭제된 도서 [{book.deleted_date}]"
+                else:
+                    status = '대출 중' if book.is_loaned else '대출 가능'
                 print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
             print("=" * 130)
         else:

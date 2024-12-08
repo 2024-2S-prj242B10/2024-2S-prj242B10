@@ -125,6 +125,7 @@ class Prompt:
                     if validate.validate_book_id(book_id):
                         if validate.validate_book_exist(book_id):
                             if validate.validate_book_can_borrow(book_id):
+                                book_manager.books = book_manager.load_books()
                                 book = book_manager.search_book_by_id(book_id)
                                 if book.deleted_date == "":
 
