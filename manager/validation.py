@@ -125,7 +125,7 @@ class Validate():
             r'('
             r'[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,18}[a-zA-Z가-힣0-9])?'  # 저자명
             r')'
-            r'\]$|^\[,]$'  # 또는 단순히 [,] 만 입력된 경우
+            r'\]$|^\[-,-]$'  # 또는 단순히 [,] 만 입력된 경우
         )
         return bool(re.fullmatch(element_regex, writer_element))
 
@@ -223,8 +223,8 @@ class File_util:
                         return
                     else:
                         parts = lines[0].split(',')
-                        if not len(parts)%2==1:
-                            print('1 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                        if not len(parts) ==17:
+                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
@@ -246,7 +246,7 @@ class File_util:
                             deleted_date = parts[16]# 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
-                                print('2 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
@@ -258,21 +258,17 @@ class File_util:
                             loan_check = self.validate.validate_t_f(book_loan_check)
                             book_publisher_check = self.validate.validate_book_publisher(book_publisher)
                             stored_date_check =self.validate.validate_date(stored_date)
-                            deleted_date_check = self.validate.validate_date(deleted_date)
+                            deleted_date_check = (self.validate.validate_date(deleted_date) or (deleted_date == ""))
                             for i in range(len(writer_str)):
-                                if writer_str[i] == '[-,-]':
-                                    writer_str_check = True
-                                else:
-                                    writer_str_check = self.validate.validate_writer_element(writer_str[i])
-                               
+                                writer_str_check = self.validate.validate_writer_element(writer_str[i])
+
                                 if not writer_str_check:
                                     break
-                               
-
+                            
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
-                                         and stored_date_check): # and deleted_date_check
-                                print('3 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                         and stored_date_check and deleted_date_check): 
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                             self.book_count = 1
@@ -280,12 +276,12 @@ class File_util:
                     line_count =0
                     for line in lines:
                         if line=='':
-                            print('4 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         parts = line.split(',')
-                        if not len(parts)%2==1:
-                            print('5 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                        if not len(parts) ==17:
+                            print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
                         else:
@@ -307,7 +303,7 @@ class File_util:
                             deleted_date = parts[16] # 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
-                                print('6 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
 
@@ -319,21 +315,17 @@ class File_util:
                             loan_check = self.validate.validate_t_f(book_loan_check)
                             book_publisher_check = self.validate.validate_book_publisher(book_publisher)
                             stored_date_check =self.validate.validate_date(stored_date)
-                            # deleted_date_check = self.validate.validate_date(deleted_date)
+                            deleted_date_check = (self.validate.validate_date(deleted_date) or deleted_date == "")
                             for i in range(len(writer_str)):
-                                if writer_str[i] == '[-,-]':
-                                    writer_str_check = True
-                                else:
-                                    writer_str_check = self.validate.validate_writer_element(writer_str[i])
-                               
+                                writer_str_check = self.validate.validate_writer_element(writer_str[i])
                                 if not writer_str_check:
                                     break
                                
 
                             if not (book_delim_check and id_check and title_check
                                      and loan_check and book_publisher_check and writer_str_check
-                                         and stored_date_check): # and deleted_date_check
-                                print('7 booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                         and stored_date_check and deleted_date_check): # and deleted_date_check
+                                print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                         line_count +=1
@@ -401,7 +393,7 @@ class File_util:
                             loan_avail_date_check = self.validate.validate_date(loan_avail_date)
                             access_level_check = self.validate.validate_t_f(access_level)
                             if not (use_name_check and user_id_check and user_pw_check and loan_count_check and loan_avail_date_check and access_level_check):
-                                print('4 userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
+                                print('userlist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                                 time.sleep(0.1)
                                 sys.exit()
                         line_count +=1
