@@ -34,7 +34,7 @@ class Prompt:
             
     def manager_menu_prompt(self, book_manager):
         validate = Validate()
-        arrow = [0, 1, 2, 3, 4, 5]
+        arrow = [0, 1, 2, 3, 4, 5, 6]
         while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
             print("[관리자 메뉴]")
@@ -44,6 +44,7 @@ class Prompt:
             print("3. 도서 검색")
             print("4. 도서 조회")
             print("5. 대출 및 연체 기간 수정")
+            print("6. 도서 연혁 조회")
             command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
@@ -164,6 +165,9 @@ class Prompt:
                 elif command == 5:  # 대출 및 연체 기간 수정
                     book_manager.update_loan_overdue_date()
                     continue
+                elif command == 6:  # 도서 연혁 조회
+                    display_book_history_admin()
+                    continue
             else:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
 
@@ -172,7 +176,7 @@ class Prompt:
     # 사용자 메뉴 프롬프트
     def user_menu_prompt(self, book_manager, user_id):
 
-        arrow = [0,1,2,3,4]
+        arrow = [0,1,2,3,4,5]
         while True:  # 잘못된 입력이면 모드 선택 프롬프트 반복
             print("-------------------------------------------")
             print("[사용자 메뉴]")
@@ -181,6 +185,7 @@ class Prompt:
             print("2. 도서 반납")
             print("3. 도서 검색")
             print("4. 도서 조회")
+            print("5. 도서 연혁 조회")
             command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
@@ -204,6 +209,9 @@ class Prompt:
                     continue
                 elif command == 4: # 도서 조회
                     view_books(book_manager)
+                    continue
+                elif command == 5: # 도서 연혁 조회
+                    display_book_history_user()
                     continue
             else:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
