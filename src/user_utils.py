@@ -339,6 +339,11 @@ def display_book_history_user(totallog_path='data/totallog.txt', booklist_path='
             print("도서 연혁 조회가 취소되었습니다.")
             return
 
+        # 유효한 도서 ID 확인
+        if not is_valid_book(book_id):
+            print("존재하지 않는 도서입니다. 다시 입력해주세요.")
+            continue
+
         # 대출 및 반납 기록 파일 로드
         totallog = []
         with open(totallog_path, 'r') as file:
@@ -390,6 +395,7 @@ def display_book_history_user(totallog_path='data/totallog.txt', booklist_path='
         book = next((b for b in booklist if b['book_id'] == book_id), None)
         if not book:
             print(f"도서 ID [{book_id}]에 해당하는 기록이 없습니다.")
+            print("사용자 메뉴로 돌아갑니다.")
             return
 
         # 도서 연혁 출력
