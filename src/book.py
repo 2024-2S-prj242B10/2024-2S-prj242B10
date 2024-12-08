@@ -1,7 +1,11 @@
 import csv
 import os
 import random
+from datetime import datetime
+
 from manager.var import Var as var
+from src.user_utils import is_valid_book, calculate_overdue_days
+
 
 class Book:
     def __init__(self, book_id, title, publisher, authors, book_code, is_loaned=False, registered_date=None, deleted_date=""):
@@ -25,7 +29,7 @@ class BookManager:
         self.book_file_path = book_file_path
         self.books = self.load_books()
         self.authors = self.build_authors()
-        
+
     def load_books(self):
         books = []
         if os.path.exists(self.book_file_path):
@@ -38,7 +42,7 @@ class BookManager:
                     title = row[2]          # 도서 제목
                     is_loaned = row[3] == 'True'  # 대출 상태
                     publisher = row[4]      # 출판사
-                    
+
                     # 저자 정보 추출: 5번째 인덱스부터 10개의 값을 가져와 2개씩 묶음
                     authors = []
                     max_index = 5 + var.MAX_WRITER_CNT * 2
@@ -140,7 +144,7 @@ class BookManager:
             if chosen_code in [code for code, _ in current_authors]:
                 print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
                 return None, None
-            
+
             if chosen_code == '0':
                 author_code = self.generate_author_code()
             elif chosen_code in all_author_codes:
@@ -177,9 +181,9 @@ class BookManager:
             print("[동일한 제목, 출판사, 저자의 도서가 존재합니다. 추가 등록할 도서를 선택해주세요.]")
             for code, name in duplicate_books:
                 print(f"[{code}] - 도서명: {name}")
-            
+
             chosen_code = input("선택할 도서의 구분자를 입력하세요 (새로운 도서를 등록하려면 0을 입력하세요): ").strip()
-            
+
             # 사용자가 0을 입력하면 새로운 도서로 등록
             if chosen_code == '0':
                 print("새로운 도서로 등록합니다.")
@@ -201,9 +205,9 @@ class BookManager:
             if code != '-':
                 self.authors[code] = name
 
-        
+
         authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in author_list if author_code != "-" or author_name != "-"])
-        
+
         print(f"도서 '{title}'이(가) 등록되었습니다. 도서 ID: {new_book_id}, 도서 구분자: {book_code}, 저자: {authors_str}")
         print("관리자 메뉴로 돌아갑니다.")
 
@@ -266,7 +270,7 @@ class BookManager:
 
     def update_loan_overdue_date(self):
         arrow = [0,1,2]
-        while True:  
+        while True:
             print("-------------------------------------------")
             print("[대출 및 연체 기간 수정]")
 
@@ -280,11 +284,11 @@ class BookManager:
             else:
                 print('올바르지 않은 입력형식입니다. 다시 입력해주세요.')
                 continue
-            
+
             if command in arrow:
                 if command == 0:
                     #print("뒤로가기")
-                    break 
+                    break
                 elif command == 1:
                     self.update_loan_date()
                     break
@@ -294,16 +298,16 @@ class BookManager:
             else:
                 print("올바르지 않은 입력형식입니다. 다시 입력해주세요.")  # 오류 메시지 출력
 
-        return None 
-    
-        
+        return None
+
+
     def update_loan_date(self):
         print("-------------------------------------------")
         print("[대출 기간 수정]")
         from manager.var import Var as var
         print("현재 대출 기간: "+str(var.LOAN_DATE)+"일")
         while True:
-            
+
             command = input("변경을 희망하는 대출 기간을 입력해 주세요: ").strip()
 
             if command.isdigit():
@@ -316,7 +320,7 @@ class BookManager:
                 print('변경 가능한 대출 기간은 1일 이상, 100일 이하입니다.')
                 continue
             break
-            
+
         var.LOAN_DATE = command
 
         with open('data/startinfo.txt', 'w', encoding='utf-8') as file:
@@ -325,7 +329,7 @@ class BookManager:
         print("대출 기간이 "+str(var.LOAN_DATE)+"일로 수정되었습니다.")
         print("관리자 메뉴로 돌아갑니다.")
         return None
-    
+
     def update_overdue_date(self):
         print("-------------------------------------------")
         print("[연체 기간 수정]")
@@ -343,10 +347,10 @@ class BookManager:
             if command < 1 or command > 100:
                 print('변경 가능한 연체 기간은 1일 이상, 100일 이하입니다.')
                 continue
-            
+
             break
 
-        
+
         var.OVERDUE_DATE = command
 
         with open('data/startinfo.txt', 'w', encoding='utf-8') as file:
@@ -355,5 +359,96 @@ class BookManager:
         print("연체 기간이 "+str(var.OVERDUE_DATE)+"일로 수정되었습니다.")
         print("관리자 메뉴로 돌아갑니다.")
         return None
-    
-    
+
+
+
+def display_book_history_admin(totallog_path='data/totallog.txt', booklist_path='data/booklist.txt'):
+    """도서 ID를 기반으로 해당 도서의 연혁 출력"""
+
+    while True:
+        book_id = input("연혁을 조회할 도서 ID를 입력하세요(0 입력시 관리자 메뉴로 돌아갑니다.): ").strip()
+
+        # 양의 정수 판별
+        if book_id.isdigit() and int(book_id) >= 0:
+            book_id = str(int(book_id))
+        else:
+            print("올바르지 않은 입력입니다. 다시 입력해주세요.")
+            continue
+        # 0을 입력한 경우 사용자 메뉴로 돌아감
+        if book_id == '0':
+            print("도서 연혁 조회가 취소되었습니다.")
+            return
+
+        # 대출 및 반납 기록 파일 로드
+        totallog = []
+        with open(totallog_path, 'r') as file:
+            for line in file:
+                data = line.strip().split(',')
+                record = {
+                    'book_id': data[0],  # 도서 ID
+                    'user_id': data[1],  # 사용자 ID
+                    'borrowed': data[2] == 'True',  # 대출 여부
+                    'date': data[3],  # 대출 또는 반납일
+                    'expected_date': data[4]  # 반납 예정일
+                }
+                totallog.append(record)
+
+        # 도서 정보 파일 로드
+        booklist = []
+        with open(booklist_path, 'r') as file:
+            reader = csv.reader(file)
+            for data in reader:
+                # 저자 정보 추출: 5번째 인덱스부터 10개의 값을 가져와 2개씩 묶음
+                authors = []
+                none_authors_cnt = 0
+                max_index = 5 + var.MAX_WRITER_CNT * 2
+                for i in range(5, max_index, 2):  # 5부터 시작해서 2개씩 건너뛰기 (5~14)
+                    author_code = data[i] if i < len(data) else "-"
+                    author_name = data[i + 1] if (i + 1) < len(data) else "-"
+                    if author_code.strip("[]") == '-' and author_name.strip("[]") == '-':
+                        none_authors_cnt+=1
+                    else:
+                        authors.append((author_code.strip("[]"), author_name.strip("[]")))
+                    if none_authors_cnt == 5:
+                        authors.append("-")
+
+                book = {
+                    'book_id': data[1],  # 도서 ID
+                    'book_identifier': data[0],  # 도서 구분자
+                    'title': data[2],  # 도서 제목
+                    'borrowed': data[3] == 'True',  # 도서 대출 여부
+                    'publisher': data[4],  # 출판사
+                    'authors': authors,
+                    'entry_date': data[-2] if len(data) >= 11 else None,  # 등록일
+                    'delete_date': data[-1] if len(data) > 11 else None  # 삭제일
+                }
+                booklist.append(book)
+        # 주어진 도서 ID에 해당하는 도서 정보 검색
+        book = next((b for b in booklist if b['book_id'] == book_id), None)
+        if not book:
+            print(f"도서 ID [{book_id}]에 해당하는 기록이 없습니다.")
+            return
+
+        # 도서 연혁 출력
+        print(f"[{book_id}] - [{book['book_identifier']}] - [{book['title']}] - "
+              f"[{book['authors']}] - [{book['publisher']}]에 대한 연혁입니다.")
+        print("대출 및 반납 내역")
+
+        if book['entry_date']:
+            print(f"{book['entry_date']} 등록")  # 등록일 출력
+
+        # 대출 및 반납 내역 출력
+        for log in sorted([l for l in totallog if l['book_id'] == book_id],
+                          key=lambda x: x['date']):
+            if log['borrowed']:
+                print(f"{log['date']} 대출 [{log['user_id']}] - [{log['expected_date']}]")
+            else:
+                overdue = calculate_overdue_days(log['date'], log['expected_date'])
+                overdue_text = f"- [{overdue}일 연체]" if overdue else ""
+                print(f"{log['date']} 반납 [{log['user_id']}] {overdue_text}")
+
+        if book['delete_date']:
+            print(f"{book['delete_date']} 삭제")  # 삭제일 출력
+
+        print("관리자 메뉴로 돌아갑니다.")
+        return
