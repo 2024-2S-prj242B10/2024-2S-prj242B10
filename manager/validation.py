@@ -125,7 +125,7 @@ class Validate():
             r'('
             r'[a-zA-Z가-힣0-9](?:[a-zA-Z가-힣0-9\s]{0,18}[a-zA-Z가-힣0-9])?'  # 저자명
             r')'
-            r'\]$|^\[-,-]$'  # 또는 단순히 [,] 만 입력된 경우
+            r'\]$|^\[-,-]$'  # 또는 단순히 [-,-] 만 입력된 경우
         )
         return bool(re.fullmatch(element_regex, writer_element))
 
@@ -223,7 +223,7 @@ class File_util:
                         return
                     else:
                         parts = lines[0].split(',')
-                        if not len(parts) ==17:
+                        if not len(parts) ==(7+ 2*var.MAX_WRITER_CNT):
                             print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
@@ -235,15 +235,15 @@ class File_util:
                             name_delim = []
                             '''
                             writer_element = []
-                            for i in range(5,15):
+                            for i in range(5,2*var.MAX_WRITER_CNT+5):
                                 writer_element.append(parts[i])
                             
                             writer_str = []
-                            for i in range(5):
+                            for i in range(var.MAX_WRITER_CNT):
                                 writer_str.append(writer_element[i*2] + "," + writer_element[i*2 +1])
 
-                            stored_date = parts[15] # 입고일
-                            deleted_date = parts[16]# 삭제일
+                            stored_date = parts[-2] # 입고일
+                            deleted_date = parts[-1]# 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
@@ -280,7 +280,7 @@ class File_util:
                             time.sleep(0.1)
                             sys.exit()
                         parts = line.split(',')
-                        if not len(parts) ==17:
+                        if not len(parts) ==(7+2*var.MAX_WRITER_CNT):
                             print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
                             time.sleep(0.1)
                             sys.exit()
@@ -292,15 +292,15 @@ class File_util:
                             name_delim = []
                             '''
                             writer_element = []
-                            for i in range(5,15):
+                            for i in range(5,2*var.MAX_WRITER_CNT+5):
                                 writer_element.append(parts[i])
                             
                             writer_str = []
-                            for i in range(5):
+                            for i in range(var.MAX_WRITER_CNT):
                                  writer_str.append(writer_element[i*2] + "," + writer_element[i*2 +1])
 
-                            stored_date = parts[15] # 입고일
-                            deleted_date = parts[16] # 삭제일
+                            stored_date = parts[-2] # 입고일
+                            deleted_date = parts[-1] # 삭제일
 
                             if not len(writer_str)==var.MAX_WRITER_CNT:  #저자 수가 
                                 print('booklist.txt파일의 내용에 오류가 있습니다. 프로그램을 종료합니다.')
