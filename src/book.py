@@ -383,7 +383,7 @@ def display_book_history_admin(totallog_path='data/totallog.txt', booklist_path=
     """도서 ID를 기반으로 해당 도서의 연혁 출력"""
 
     while True:
-        book_id = input("연혁을 조회할 도서 ID를 입력하세요(0 입력시 관리자 메뉴로 돌아갑니다.): ").strip()
+        book_id = input("연혁을 열람할 도서 ID를 입력하세요(0 입력시 관리자 메뉴로 돌아갑니다.): ").strip()
 
         # 양의 정수 판별
         if book_id.isdigit() and int(book_id) >= 0:
@@ -393,7 +393,7 @@ def display_book_history_admin(totallog_path='data/totallog.txt', booklist_path=
             continue
         # 0을 입력한 경우 사용자 메뉴로 돌아감
         if book_id == '0':
-            print("도서 연혁 조회가 취소되었습니다.")
+            print("도서 연혁 열람이 취소되었습니다.")
             return
 
         # 유효한 도서 ID 확인

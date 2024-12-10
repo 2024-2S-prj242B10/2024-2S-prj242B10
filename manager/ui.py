@@ -44,7 +44,7 @@ class Prompt:
             print("3. 도서 검색")
             print("4. 도서 조회")
             print("5. 대출 및 연체 기간 수정")
-            print("6. 도서 연혁 조회")
+            print("6. 도서 연혁 열람")
             command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
@@ -188,7 +188,7 @@ class Prompt:
             print("2. 도서 반납")
             print("3. 도서 검색")
             print("4. 도서 조회")
-            print("5. 도서 연혁 조회")
+            print("5. 도서 연혁 열람")
             command = input("원하는 메뉴의 번호를 입력해 주세요:").strip()
             
             if command.isdigit():  # 입력값이 숫자로만 이루어졌는지 확인
