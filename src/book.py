@@ -142,8 +142,8 @@ class BookManager:
 
             # 사용자가 선택한 저자 코드가 현재 저자 리스트에 이미 있는 경우
             if chosen_code in [code for code, _ in current_authors]:
-                print("올바르지 않은 입력입니다. 관리자 메뉴로 돌아갑니다.")
-                return None, None
+                print("이미 입력된 저자입니다.")
+                return "duplicate", None  # 동일인을 선택했음을 플래그로 반환
 
             if chosen_code == '0':
                 author_code = self.generate_author_code()
