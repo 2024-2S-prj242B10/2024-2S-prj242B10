@@ -359,6 +359,7 @@ def display_book_history_user(totallog_path='data/totallog.txt', booklist_path='
                 totallog.append(record)
 
         # 도서 정보 파일 로드
+        var = Var()
         booklist = []
         with open(booklist_path, 'r') as file:
             reader = csv.reader(file)
@@ -366,7 +367,9 @@ def display_book_history_user(totallog_path='data/totallog.txt', booklist_path='
                 # 저자 정보 추출: 5번째 인덱스부터 10개의 값을 가져와 2개씩 묶음
                 authors = []
                 none_authors_cnt = 0
-                max_index = 5 + 5 * 2  # MAX_WRITER_CNT = 5
+                #max_index = 5 + 5 * 2  # MAX_WRITER_CNT = 5
+                
+                max_index = 5 + var.MAX_WRITER_CNT * 2
                 for i in range(5, max_index, 2):  # 5부터 시작해서 2개씩 건너뛰기 (5~14)
                     author_code = data[i] if i < len(data) else "-"
                     author_name = data[i + 1] if (i + 1) < len(data) else "-"
@@ -374,7 +377,7 @@ def display_book_history_user(totallog_path='data/totallog.txt', booklist_path='
                         none_authors_cnt += 1
                     else:
                         authors.append((author_code.strip("[]"), author_name.strip("[]")))
-                if none_authors_cnt == 5:
+                if none_authors_cnt == var.MAX_WRITER_CNT:
                     authors.append("-")
 
                 book = {

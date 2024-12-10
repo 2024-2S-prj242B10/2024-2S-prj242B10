@@ -431,7 +431,7 @@ def display_book_history_admin(totallog_path='data/totallog.txt', booklist_path=
                         none_authors_cnt+=1
                     else:
                         authors.append((author_code.strip("[]"), author_name.strip("[]")))
-                    if none_authors_cnt == 5:
+                    if none_authors_cnt == var.MAX_WRITER_CNT:
                         authors.append("-")
 
                 book = {
