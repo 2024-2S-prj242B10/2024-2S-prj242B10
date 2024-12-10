@@ -91,6 +91,8 @@ class Prompt:
 
                         # 저자 코드와 이름 추가
                         author_code, author_name = book_manager.add_author(register_author, author_list)
+                        if author_code == "duplicate":
+                            continue
                         if not author_code:
                             valid_input = False  # 추가 실패 시 탈출
                             break
