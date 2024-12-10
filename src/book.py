@@ -240,6 +240,8 @@ class BookManager:
             for book in sorted_books[:count]:
                 #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
+                if authors_str == "":
+                    authors_str = "-"
 
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 # 상태 필드 설정
@@ -263,6 +265,8 @@ class BookManager:
             for book in sorted_books:
                 #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
+                if authors_str == "":
+                    authors_str = "-"
                 book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
                 # 상태 필드 설정
                 if book.deleted_date.strip():  # 삭제된 도서라면
