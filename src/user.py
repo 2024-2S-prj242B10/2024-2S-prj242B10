@@ -241,11 +241,11 @@ def search_book(book_manager):
 
     # 검색할 도서 제목 입력 받기
     search_title = input("\n검색할 도서 제목을 입력해주세요: ").strip()
-    book_manager.search_book_by_title(search_title)
+    book_manager.search_book_by_title(search_title, 'user')
 
 # 도서 조회 기능
 def view_books(book_manager):
-    book_manager.display_books()
+    book_manager.display_books(None, 'user')
 
 
 def search_book_log():
