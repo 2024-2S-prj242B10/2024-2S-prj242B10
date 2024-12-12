@@ -166,6 +166,7 @@ class BookManager:
     def register_book(self, title, publisher, author_list):
         book_code = self.generate_book_code()
         duplicate_books = []  # 중복된 도서 목록 저장
+        seen_codes = set()
 
         # 시작 날짜 읽기
         with open("data/startdate.txt", 'r', encoding='utf-8') as date_file:
@@ -174,7 +175,9 @@ class BookManager:
         # 제목, 출판사, 저자가 같은 도서 찾기
         for book in self.books:
             if book.title == title and book.publisher == publisher and book.authors == author_list:
-                duplicate_books.append((book.book_code, book.title))
+                if book.book_code not in seen_codes:
+                    duplicate_books.append((book.book_code, book.title))
+                    seen_codes.add(book.book_code)
 
         # 중복 도서가 있을 경우
         if duplicate_books:
