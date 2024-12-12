@@ -231,6 +231,8 @@ class BookManager:
 
     def display_books(self, count=None, user='admin'):
         books = self.load_books()
+        if user == 'user':
+            books = [book for book in books if not book.deleted_date.strip()]
 
         if not books:
             print("등록된 책이 없습니다.")
@@ -241,9 +243,6 @@ class BookManager:
             print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
             print("=" * 130)
             for book in sorted_books[:count]:
-                if user == 'user' and book.deleted_date.strip():
-                    continue
-
                 #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
                 if authors_str == "":
@@ -261,6 +260,8 @@ class BookManager:
 
     def search_book_by_title(self, title, user='admin'):
         books = self.load_books()
+        if user == 'user':
+            books = [book for book in books if not book.deleted_date.strip()]
 
         title = title.strip()
         found_books = [book for book in books if book.title.strip() == title]
@@ -269,8 +270,6 @@ class BookManager:
         print("=" * 130)
         if sorted_books:
             for book in sorted_books:
-                if user == 'user' and book.deleted_date.strip():
-                    continue
                 #authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
                 authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors if author_code != "-" or author_name != "-"])
                 if authors_str == "":
