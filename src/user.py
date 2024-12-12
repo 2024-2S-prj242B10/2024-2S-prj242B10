@@ -147,6 +147,7 @@ def borrow_book(user_id):
         if confirm == 'y':
             # 대출 기록 업데이트 및 사용자 대출 권수 업데이트
             update_log(user_id, book_id, True, return_date)
+            update_totallog_borrow(user_id, book_id, True, return_date)
             update_user_borrow_count(user_id, 1)
             # 도서 대출 여부 업데이트
             update_book_status(book_id)  # 대출 여부를 True로 변경
@@ -207,6 +208,11 @@ def return_book(user_id):
         confirm = input().strip()
 
         if confirm == 'y':
+
+            # 반납예정일 먼저 가져와서 토탈로그에 찍히게
+            return_date_ = get_return_date(book_id, user_id)
+            update_totallog_return(user_id, book_id, False, return_date_)
+
             # 도서 반납 처리
             is_overdue = return_book_process(user_id, book_id)
 
@@ -215,6 +221,7 @@ def return_book(user_id):
             book_title = book_info[2]
             book_publisher = book_info[4]
             book_author = book_info[5]
+
 
             if is_overdue:
                 next_borrow_date = calculate_next_borrow_date(get_current_date())
@@ -234,10 +241,45 @@ def search_book(book_manager):
 
     # 검색할 도서 제목 입력 받기
     search_title = input("\n검색할 도서 제목을 입력해주세요: ").strip()
-    book_manager.search_book_by_title(search_title)
+    book_manager.search_book_by_title(search_title, 'user')
 
 # 도서 조회 기능
 def view_books(book_manager):
-    book_manager.display_books()
+    book_manager.display_books(None, 'user')
 
 
+def search_book_log():
+
+    while True:
+        book_id = input("원하는 도서의 ID(번호)를 입력해주세요(0 입력시 사용자 메뉴로 돌아갑니다.): ").strip()
+
+        # 양의 정수 판별
+        if book_id.isdigit() and int(book_id) >= 0:
+            book_id = str(int(book_id))
+        else:
+            print("올바르지 않은 입력입니다. 다시 입력해주세요.")
+            continue
+
+        # 0을 입력한 경우 사용자 메뉴로 돌아감
+        if book_id == '0':
+            print("사용자 메뉴로 돌아갑니다.")
+            return
+
+        # 유효한 도서 ID 확인
+        if not is_valid_book(book_id):
+            print("존재하지 않는 도서입니다. 다시 입력해주세요.")
+            continue
+    title = title.strip()
+    found_books = [book for book in self.books if book.title.strip() == title]
+    sorted_books = sorted(found_books, key=lambda book: book.book_id)
+    print(f"{'도서 ID(도서 구분자)':<9} {'도서 제목':<50} {'출판사':<19} {'저자[이름 구분자]':<29} {'상태':<5}")
+    print("=" * 130)
+    if sorted_books:
+        for book in sorted_books:
+            authors_str = ", ".join([f"{author_name} [{author_code}]" for author_code, author_name in book.authors])
+            book.is_loaned = book.is_loaned == 'True' or book.is_loaned == True
+            status = '대출 중' if book.is_loaned else '대출 가능'
+            print(f"{book.book_id}({book.book_code})        {book.title:<52} {book.publisher:<20} {authors_str:<30} {status:<10}")
+        print("=" * 130)
+    else:
+        print(f"'{title}' 제목의 도서를 찾을 수 없습니다.")

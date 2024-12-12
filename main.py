@@ -7,7 +7,7 @@ from src.date_manager import DateManager
 from src.user import *
 from src.book import BookManager
 # from src.user import UserManager
-  
+
 def main():
     #무결성 검사
 
@@ -17,6 +17,7 @@ def main():
     file_util.validate_userlist_file()
     file_util.validate_loglist_file()
     file_util.validate_startinfo_file()
+    file_util.validate_totallog_file()
 
     date_manager = DateManager()
     date_manager.read_file()
@@ -37,7 +38,7 @@ def main():
                 else:
                     break
     
-    #loan_manager = LoanManaer()
+    
     user_manager = UserManager()
     book_manager = BookManager()
 
