@@ -391,11 +391,19 @@ def display_book_history_user(totallog_path='data/totallog.txt', booklist_path='
                     'delete_date': data[-1] if len(data) > 11 else None  # 삭제일
                 }
                 # 삭제된 도서는 제외
-                if not book['delete_date']:
-                    booklist.append(book)
+                # if not book['delete_date']:
+                #     booklist.append(book)
+                
+        if book['delete_date']:
+            print(f"도서 ID [{book_id}]는 삭제된 도서입니다.")
+            print("사용자 메뉴로 돌아갑니다.")
+            return
+
+        booklist.append(book)
 
         # 주어진 도서 ID에 해당하는 도서 정보 검색
         book = next((b for b in booklist if b['book_id'] == book_id), None)
+
         if not book:
             print(f"도서 ID [{book_id}]에 해당하는 기록이 없습니다.")
             print("사용자 메뉴로 돌아갑니다.")
